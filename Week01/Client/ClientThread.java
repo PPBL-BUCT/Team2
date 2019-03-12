@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileWriter;
@@ -23,30 +24,38 @@ public class ClientThread implements Runnable {
 		while(true) {
 			try {
 				str=di.readUTF();//读取输入流中的信息
-				writeFile(str);
+				String name="default";
+				if(str.indexOf("说")>=0) {
+					name = str.substring(9, str.indexOf("说"));
+					
+				}else if(str.indexOf("进入聊天室")>=0){
+					name = str.substring(9, str.indexOf("进入聊天室"));
+				}
+				writeFile(name,str);
 				System.out.println(str); //在客户端中打印接收消息内容
 				
 			}
 			catch(IOException e){
-				System.out.println("Error");//输出错误
+				System.out.println("系统出错啦");//输出错误
 				System.exit(0);//关闭客户端
 				
 			}
 		}
 		
 	}
-	public void writeFile(String str1){     //定义消息记录方法
+	public void writeFile(String name,String str1){     //定义消息记录方法
 		try {
-			File file = new File(ChatClient.name + ".txt");//创建新本地文件
+			File file = new File(name + ".txt");//创建新本地文件
 			FileWriter fw = new FileWriter(file, true);//创建一个FileWriter对象
 			BufferedWriter bw = new BufferedWriter(fw);//创建一个字符缓冲输出流对象
 			bw.write(str1);//写入消息内容
-			bw.write("\n");//换行
+			bw.newLine();//换行
 			bw.close();//关闭字符缓冲流
 			fw.close();//关闭字符输出流
-		}
+			}
+		
 		catch(IOException e) {
-			System.out.println("Error");//输出错误
+			System.out.println("出错啦");//输出错误
 		}
 		
 	}
