@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class ServerThread implements Runnable {
 	// 定义一个socket变量
@@ -20,6 +17,28 @@ public class ServerThread implements Runnable {
 	String name = null;
 	// 创建一个hashtable对象用来保存所有的为客户端开辟的线程对象
 	static Hashtable<String, ServerThread> clientlist = new Hashtable<String, ServerThread>();
+
+	/**
+	 * 广播方法
+	 * @param str
+	 */
+
+	public void Broadcast(String str){
+		Enumeration<ServerThread> allclients = clientlist.elements();
+
+		while (allclients.hasMoreElements()){
+		ServerThread st = (ServerThread) allclients.nextElement();
+		{
+			try{
+				st.dos.writeUTF(str);
+
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+
+			}
+		}
+	}
 
 	@Override
 	public void run() {

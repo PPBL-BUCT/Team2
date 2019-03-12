@@ -16,5 +16,5 @@ public class ChatServer {
     private static DataInputStream di = null;
     // 定义输出流变量
     private static DataOutputStream dos = null;
-    
+
 }
