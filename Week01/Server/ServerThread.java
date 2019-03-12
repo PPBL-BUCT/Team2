@@ -40,6 +40,26 @@ public class ServerThread implements Runnable {
 		}
 	}
 
+	/**
+	 * 检查用户昵称是否重复
+	 * @param str
+	 */
+	public boolean checkp(String str) {
+		boolean flag = true;
+		Enumeration<String> checkname = clientlist.keys();//取得枚举集合
+		while (checkname.hasMoreElements()) {
+			String sn = (String) checkname.nextElement();//遍历
+			// 判断用户名是否重复，重复的话返回false
+			if (str.equalsIgnoreCase(sn)) {
+				flag = false;
+				//检查是否为空字符串
+			} else if (str.equalsIgnoreCase("")) {
+				flag = false;
+			}
+		}
+		return flag;
+	}
+
 	@Override
 	public void run() {
 
