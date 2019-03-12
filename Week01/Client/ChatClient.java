@@ -115,62 +115,8 @@ public class ChatClient {
                 flag = false;
             }
         } catch (IOException e) {
-
+            e.printstracktrace();
         }
     }
 
-    // 写入信息
-    @SuppressWarnings("deprecation")
-    public void send() {
-        // 循环接收发送的消息
-        System.out.println("请输入内容：");
-        String Null = sc.nextLine();
-        while (sc.hasNext()) {
-            String mess;
-            mess = sc.nextLine();
-            if (mess.equalsIgnoreCase("/0")) {
-                System.exit(0);
-            } else {
-                select(mess);
-            }
-        }
-    }
-
-    // 将消息发送给服务器
-    public void select(String mess) {
-        // 判断输入的信息
-        if (mess.equalsIgnoreCase("/A")) {
-            // 匹配上调用helpList()方法
-            helpList();
-        } else if (mess.equalsIgnoreCase("/C")) {
-            try {
-                System.out.println("请输入你要查看的聊天记录的名字");
-                String str1 = sc.next();
-                File file = new File(str1 + ".txt");
-                BufferedReader bf = new BufferedReader(new FileReader(file));
-                String str = null;
-                while ((str = bf.readLine()) != null) {
-                    System.out.println(str);
-                }
-                bf.close();
-            } catch (IOException e) {
-
-            }
-
-        } else {
-            try {
-                // 将消息发送给服务器
-                dos.writeUTF(mess);
-                // 清空输出流
-                dos.flush();
-            } catch (IOException e) {
-
-            }
-        }
-    }
-
-    public void helpList() {
-        System.out.println("提示：进入聊天室，默认公聊!!");
-        System.out.println("/B 用户在线列表，用户/信息 私聊，/C 查看聊天记录，/0 退出系统");
-    }
 }
