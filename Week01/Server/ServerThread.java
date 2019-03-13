@@ -81,6 +81,37 @@ public class ServerThread implements Runnable {
 		return flag;
 	}
 
+	/**
+	 * 获取当前时间
+	 * @return String类型时间
+	 */
+	public String getTime(){
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sd.format(new Date());
+		return currentTime;
+
+	}
+
+	/**
+	 * 获取当前在线用户列表
+	 */
+	public void getList(){
+		Enumeration<String> checkNames = clientlist.keys();
+		ServerThread st = clientlist.get(name);//通过名称获取当前线程（请求列表的线程）
+		try{
+			st.dos.writeUTF("当前在线列表");
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+		while (checkNames.hasMoreElements()){
+			try{
+				st.dos.writeUTF(checkNames.nextElement());//发送列表中每个用户的名称
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@Override
 	public void run() {
 
