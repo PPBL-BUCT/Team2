@@ -41,6 +41,27 @@ public class ServerThread implements Runnable {
 	}
 
 	/**
+	 * 私聊方法
+	 * @param receiver
+	 * @param mess
+	 */
+	public void sendClient(String receiver, String mess) {
+		ServerThread st = clientlist.get(receiver);//接收者的线程
+		ServerThread st1 = clientlist.get(name);//发送者的线程
+		try {
+			// 将要发送的信息保存到流中
+			st.dos.writeUTF(getDate() + "\t" + name + "对你说：\t" + mess);
+
+			// 把信息发给原客户端
+			st1.dos.writeUTF(getDate() + "\t你对" + receiver + "说：\t" + mess);
+		} catch (IOException e) {
+
+			System.out.println("信息错误");
+			st1.dos.writeUTF("你发送的信息有误，请重新发送！");
+		}
+	}
+
+	/**
 	 * 检查用户昵称是否重复
 	 * @param str
 	 */
