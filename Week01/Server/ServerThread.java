@@ -57,7 +57,11 @@ public class ServerThread implements Runnable {
 		} catch (IOException e) {
 
 			System.out.println("信息错误");
-			st1.dos.writeUTF("你发送的信息有误，请重新发送！");
+			try {
+				st1.dos.writeUTF("你发送的信息有误，请重新发送！");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
