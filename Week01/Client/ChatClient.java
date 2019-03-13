@@ -52,7 +52,7 @@ public class ChatClient {
             port = 8000;
 
         } catch (Exception e) {
-        	e.printstracktrace();
+        	e.printStackTrace();
         }
         try {
             // 从给定的主机名得到ip存入inetaddress对象中
@@ -75,13 +75,13 @@ public class ChatClient {
                 }
             } catch (SocketException e) {
                 System.out.println("不能连接到服务器，请重新输入");
-                e.printstracktrace();
+                e.printStackTrace();
                 // 调用connect()重新连接
                 connect();
             }
         } catch (Exception e) {
             System.out.println("不能连接到服务器，请重新输入");
-            e.printstracktrace();
+            e.printStackTrace();
             // 调用connect()重新连接
             connect();
         }
@@ -102,10 +102,10 @@ public class ChatClient {
             dos = new DataOutputStream(client.getOutputStream());
             // 接受用户名
             while (flag) {
-                System.out.println("请输入用户名：");
+                System.out.println("请输入用户名："+"\n");
                 name = sc.next();
                 System.out.println(name + "上线了");
-                System.out.println("欢迎进入聊天室，需要帮助请输入/A");
+                System.out.println("欢迎进入聊天室，聊天室默认公聊，需要帮助请输入/H");
                 dos.writeUTF(name);
                 dos.flush();
                 read.setDataInputStream(di);
@@ -115,8 +115,43 @@ public class ChatClient {
                 flag = false;
             }
         } catch (IOException e) {
-            e.printstracktrace();
+            e.printStackTrace();
         }
+    }
+    public void select(String mes) {
+    	if(mes.equalsIgnoreCase("/H")) {
+    		helplist();
+    	}else if(mes.equalsIgnoreCase("/C")) {
+    		try {
+                System.out.println("请输入你要查看的聊天记录的名字"+"\n");
+                String str1 = sc.nextLine();
+                File file = new File(str1 + ".txt");
+                BufferedReader bf = new BufferedReader(new FileReader(file));
+                String str = null;
+                while ((str = bf.readLine()) != null) {
+                    System.out.println(str);
+                }
+                bf.close();
+            } catch (IOException e) {
+            	System.out.println("找不到该用户！");
+            }
+    	}else if(mes.equalsIgnoreCase("/Q")) {
+    		System.exit(0);
+    	}
+    	else {
+    		try {
+                // 将消息发送给服务器
+                dos.writeUTF(mes);
+                // 清空输出流
+                dos.flush();
+            } catch (IOException e) {
+
+            }
+    	}
+    }
+    public void helplist() {
+    	 System.out.println("帮助列表：");
+         System.out.println("/O 用户在线列表，用户/信息 私聊，/C 查看聊天记录，/Q 退出系统");
     }
 
 }
