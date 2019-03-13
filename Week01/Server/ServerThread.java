@@ -50,10 +50,10 @@ public class ServerThread implements Runnable {
 		ServerThread st1 = clientlist.get(name);//发送者的线程
 		try {
 			// 将要发送的信息保存到流中
-			st.dos.writeUTF(getDate() + "\t" + name + "对你说：\t" + mess);
+			st.dos.writeUTF(getTime() + "\t" + name + "对你说：\t" + mess);
 
 			// 把信息发给原客户端
-			st1.dos.writeUTF(getDate() + "\t你对" + receiver + "说：\t" + mess);
+			st1.dos.writeUTF(getTime() + "\t你对" + receiver + "说：\t" + mess);
 		} catch (IOException e) {
 
 			System.out.println("信息错误");
