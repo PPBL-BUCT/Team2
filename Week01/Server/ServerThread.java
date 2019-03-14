@@ -10,13 +10,30 @@ public class ServerThread implements Runnable {
 	// 定义一个socket变量
 	Socket client = null;
 	// 定义一个Datainputstream变量
-	DataInputStream di = null;
+	private DataInputStream di = null;
 	// 定义一个Dataoutputstream变量
-	DataOutputStream dos = null;
+	private DataOutputStream dos = null;
 	// 定义一个变量保存连接当前线程的用户名
-	String name = null;
+	private String name = null;
 	// 创建一个hashtable对象用来保存所有的为客户端开辟的线程对象
-	static Hashtable<String, ServerThread> clientlist = new Hashtable<String, ServerThread>();
+	private static Hashtable<String, ServerThread> clientlist = new Hashtable<String, ServerThread>();
+
+	/**
+	 * 构造方法1
+	 * @param client socket客户端实例
+	 * @param name 客户端名称
+	 */
+
+	public  ServerThread(Socket client,String name){
+
+	}
+
+	/**
+	 * 构造方法2，这里是因为主函数要先调用查重方法，值得商榷
+	 */
+	public  ServerThread(){
+
+	}
 
 	/**
 	 * 广播方法
@@ -91,8 +108,7 @@ public class ServerThread implements Runnable {
 	 */
 	public String getTime(){
 		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String currentTime = sd.format(new Date());
-		return currentTime;
+		return sd.format(new Date());
 
 	}
 
