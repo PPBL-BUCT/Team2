@@ -24,7 +24,7 @@ public class ChatServer {
 
 
     public static void main(String[] args) {
-        //ServerThread st = new ServerThread();
+        ServerThread st = new ServerThread();
         try {
             server = new ServerSocket(8000);//
         } catch (IOException e) {
@@ -42,13 +42,16 @@ public class ChatServer {
                     name = di.readUTF();//这是一个阻塞方法！
                     if (new ServerThread().checkp(name)){
                         flag = false;
+                        dos.writeUTF("用户名可用！");
                     }
-
+                    else {
+                        dos.writeUTF("用户名非法/重复，请重新输入");
+                    }
                 }
                 //再次确认连接后在线程池中建立新线程
                 if(client.isConnected()) {
-                    ServerThread st = new ServerThread(client, name);
-                    pool.execute(st);
+                    ServerThread sth = new ServerThread(client, name);
+                    pool.execute(sth);
                     flag = true;
                 }
                 else {
