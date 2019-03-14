@@ -132,8 +132,51 @@ public class ServerThread implements Runnable {
 		}
 	}
 
-	@Override
 	public void run() {
+		try {
+			// 添加当前对象到hashtable
+			clientlist.put(name, this);
+			// 发送新用户进入的消息给所有客户端
+			sendallClient(name + "进入聊天室");
 
+			while (true) {
+				// 定义一个string对象接受从流中读取到的信息
+				String mess = di.readUTF();
+				System.out.println("mess:"+mess);
+				// 创建一个stringtokenizer对象分析接收到的消息
+				StringTokenizer str = new StringTokenizer(mess, "/");
+				// 判断截取到的信息有没分隔符
+				// 如果有分隔符则判断为私聊发送信息
+				if (str.countTokens() == 2) {
+					// 得到要发送私聊信息用户的姓名
+					String nameid = str.nextToken();
+					// 得到要发送的私聊信息
+					String message = str.nextToken();
+					// 调用发sendclient送私聊信息
+					sendClient(nameid, message);
+
+					// 没有分隔符或者有多个分隔符是信息默认为公聊发送
+				} else if (mess.equalsIgnoreCase("/0")) {
+					// 匹配到调用getlist方法
+					getList();
+					// 判断信息是否与-change匹配
+				} else if (mess.equalsIgnoreCase("/Q")) {
+					System.out.println("name" + "退出聊天室");
+					break;
+				} else if (str.countTokens() == 1 || str.countTokens() >= 3) {
+					// 调用sendallclient发送公聊信息
+					sendallClient(name + "说：" + mess);
+				}
+			}
+			client.close();
+		} catch (Exception e) {
+
+		} finally {
+			// 清除客户端信息
+			clientlist.remove(name);
+			// 有人退出时，给所有人发送退出信息
+			sendallClient(name + "退出聊天室");
+			System.out.println(getDate() + " " + name + "退出聊天室");
+		}
 	}
 }

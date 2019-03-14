@@ -102,20 +102,30 @@ public class ChatClient {
             dos = new DataOutputStream(client.getOutputStream());
             // 接受用户名
             while (flag) {
-                System.out.println("请输入用户名："+"\n");
+                boolean wait = true;
+                System.out.println("请输入用户名：");
                 name = sc.next();
-                System.out.println(name + "上线了");
-                System.out.println("欢迎进入聊天室，聊天室默认公聊，需要帮助请输入/H");
                 dos.writeUTF(name);
                 dos.flush();
-                read.setDataInputStream(di);
-                // 启动线程
-                readData.start();
-                // 改变flag中断循环
-                flag = false;
+                while(wait){
+                    String str = di.readUTF();
+                    if(str.equals("用户名可用")){
+                        wait = false;
+                        System.out.println(name + "上线了");
+                        System.out.println("欢迎进入聊天室，需要帮助请输入/A");
+                        read.setDataInputStream(di);
+                        // 启动线程
+                        readData.start();
+                        // 改变flag中断循环
+                        flag = false;
+                    }else if(str.equals("用户名重复")){
+                        System.out.println("用户名重复，请重新输入");
+                        break;
+                    }
+                }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
     public void select(String mes) {
