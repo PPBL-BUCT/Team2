@@ -42,10 +42,10 @@ public class ChatServer {
                     name = di.readUTF();//这是一个阻塞方法！
                     if (new ServerThread().checkp(name)){
                         flag = false;
-                        dos.writeUTF("用户名可用！");
+                        dos.writeUTF("用户名可用");
                     }
                     else {
-                        dos.writeUTF("用户名非法/重复，请重新输入");
+                        dos.writeUTF("用户名重复请重新输入");
                     }
                 }
                 //再次确认连接后在线程池中建立新线程
