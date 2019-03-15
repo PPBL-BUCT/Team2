@@ -163,5 +163,21 @@ public class ChatClient {
     	 System.out.println("帮助列表：");
          System.out.println("/O 用户在线列表，用户/信息 私聊，/C 查看聊天记录，/Q 退出系统");
     }
+    
+	public void send() {
+		// 循环接收发送的消息
+		System.out.println("请输入聊天信息或指令：");
+		String Null = sc.nextLine();
+		while (sc.hasNext()) {
+			String msg;
+			msg = sc.nextLine();
+        if (msg.equalsIgnoreCase("/0")) {
+            System.exit(0);
+        } else {
+            select(msg);
+        }
+    }
+}
 
 }
+
