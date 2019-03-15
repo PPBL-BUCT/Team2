@@ -25,7 +25,18 @@ public class ServerThread implements Runnable {
 	 */
 
 	public  ServerThread(Socket client,String name){
+		try {
+			// 将传入的client赋值给成员变量的client
+			this.client = client;
+			// 将传入的name赋值给成员变量的name
+			this.name = name;
+			// 将服务器的输出流封装到DataInputStream中
+			di = new DataInputStream(client.getInputStream());
+			// 将服务器的输出流封装到DataOutputStream中
+			dos = new DataOutputStream(client.getOutputStream());
+		} catch (IOException e) {
 
+		}
 	}
 
 	/**
@@ -136,8 +147,9 @@ public class ServerThread implements Runnable {
 		try {
 			// 添加当前对象到hashtable
 			clientlist.put(name, this);
+			System.out.println(clientlist);
 			// 发送新用户进入的消息给所有客户端
-			sendallClient(name + "进入聊天室");
+			Broadcast(getTime() + "\t"+name + "进入聊天室");
 
 			while (true) {
 				// 定义一个string对象接受从流中读取到的信息
@@ -165,7 +177,7 @@ public class ServerThread implements Runnable {
 					break;
 				} else if (str.countTokens() == 1 || str.countTokens() >= 3) {
 					// 调用sendallclient发送公聊信息
-					sendallClient(name + "说：" + mess);
+					Broadcast(getTime() + "\t"+ name + "说：" + mess);
 				}
 			}
 			client.close();
@@ -175,8 +187,8 @@ public class ServerThread implements Runnable {
 			// 清除客户端信息
 			clientlist.remove(name);
 			// 有人退出时，给所有人发送退出信息
-			sendallClient(name + "退出聊天室");
-			System.out.println(getDate() + " " + name + "退出聊天室");
+			Broadcast(getTime() + "\t"+ name + "退出聊天室");
+			System.out.println(getTime() + " " + name + "退出聊天室");
 		}
 	}
 }
