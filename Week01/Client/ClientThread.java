@@ -27,11 +27,8 @@ public class ClientThread implements Runnable {
 				String name="default";
 				if(str.indexOf("说")>=0) {
 					name = str.substring(20, str.indexOf("说"));
-					
 				}else if(str.indexOf("进入聊天室")>=0){
-					System.out.println(str);
 					name = str.substring(20, str.indexOf("进入聊天室"));
-					System.out.println(name);
 				}else if(str.indexOf("退出聊天室")>=0){
 					name = str.substring(20, str.indexOf("退出聊天室"));
 				}

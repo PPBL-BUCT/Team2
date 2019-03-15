@@ -112,7 +112,7 @@ public class ChatClient {
                     if(str.equals("用户名可用")){
                         wait = false;
                         System.out.println(name + "上线了");
-                        System.out.println("欢迎进入聊天室，需要帮助请输入/A");
+                        System.out.println("欢迎进入聊天室，需要帮助请输入/H");
                         read.setDataInputStream(di);
                         // 启动线程
                         readData.start();
@@ -171,7 +171,7 @@ public class ChatClient {
 		while (sc.hasNext()) {
 			String msg;
 			msg = sc.nextLine();
-        if (msg.equalsIgnoreCase("/0")) {
+        if (msg.equalsIgnoreCase("/Q")) {
             System.exit(0);
         } else {
             select(msg);

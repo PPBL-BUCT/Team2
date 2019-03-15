@@ -68,6 +68,16 @@ public class ServerThread implements Runnable {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "ServerThread{" +
+				"client=" + client +
+				", di=" + di +
+				", dos=" + dos +
+				", name='" + name + '\'' +
+				'}';
+	}
+
 	/**
 	 * 私聊方法
 	 * @param receiver
@@ -82,7 +92,7 @@ public class ServerThread implements Runnable {
 
 			// 把信息发给原客户端
 			st1.dos.writeUTF(getTime() + "\t你对" + receiver + "说：\t" + mess);
-		} catch (IOException e) {
+		} catch (Exception e) {
 
 			System.out.println("信息错误");
 			try {
@@ -147,7 +157,6 @@ public class ServerThread implements Runnable {
 		try {
 			// 添加当前对象到hashtable
 			clientlist.put(name, this);
-			System.out.println(clientlist);
 			// 发送新用户进入的消息给所有客户端
 			Broadcast(getTime() + "\t"+name + "进入聊天室");
 

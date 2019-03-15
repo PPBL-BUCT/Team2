@@ -43,11 +43,9 @@ public class ChatServer {
                     if (new ServerThread().checkp(name)){
                         flag = false;
                         dos.writeUTF("用户名可用");
-                        System.out.println("用户名可用");
                     }
                     else {
                         dos.writeUTF("用户名重复请重新输入");
-                        System.out.println("用户名不可用");
 
                     }
                 }
