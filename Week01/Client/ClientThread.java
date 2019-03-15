@@ -26,10 +26,14 @@ public class ClientThread implements Runnable {
 				str=di.readUTF();//读取输入流中的信息
 				String name="default";
 				if(str.indexOf("说")>=0) {
-					name = str.substring(9, str.indexOf("说"));
+					name = str.substring(20, str.indexOf("说"));
 					
 				}else if(str.indexOf("进入聊天室")>=0){
-					name = str.substring(9, str.indexOf("进入聊天室"));
+					System.out.println(str);
+					name = str.substring(20, str.indexOf("进入聊天室"));
+					System.out.println(name);
+				}else if(str.indexOf("退出聊天室")>=0){
+					name = str.substring(20, str.indexOf("退出聊天室"));
 				}
 				writeFile(name,str);
 				System.out.println(str); //在客户端中打印接收消息内容
@@ -53,8 +57,8 @@ public class ClientThread implements Runnable {
 			bw.close();//关闭字符缓冲流
 			fw.close();//关闭字符输出流
 			}
-		
 		catch(IOException e) {
+			e.printStackTrace();
 			System.out.println("出错啦");//输出错误
 		}
 		
