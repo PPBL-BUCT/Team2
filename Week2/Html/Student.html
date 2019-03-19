@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>学生管理系统</title>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class='layui-row'>
+        <div class='head-btn'>
+            <div class='layui-form'>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级</label>
+                    <div class="layui-input-inline">
+                        <select id="classNumber" name="classNumber" class="layui-select">
+                            <option value="">选择班级</option>
+                        </select>
+                    </div>
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-inline">
+                        <input id="studentNumber" name="studentName" class="layui-select"/>
+                    </div>
+                    <label class="layui-form-label">学号</label>
+                    <div class="layui-input-inline">
+                        <input id="studentID" name="studentID" class="layui-select"/>
+                    </div>
+                    <label class="layui-form-label">籍贯</label>
+                    <div class="layui-input-inline">
+                        <input id="homeTown" name="homeTown" class="layui-select"/>
+                    </div>
+                    <button class="layui-btn" id = "search">搜索</button>
+                    <button class="layui-btn" id = "clear">清空</button>
+                </div>
+            </div>
+        </div>
+        <table class="" id="test" lay-filter="test"></table>
+    </div>
+</div>
+</body>
+</html>
