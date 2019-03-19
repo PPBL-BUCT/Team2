@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>班级跳出页</title>
+</head>
+<body>
+<div id="class-popup">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body" pad15>
+                        <div style="margin: 0 auto; width: 75%">
+                            <form class="layui-form" action="" method="post">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">班级年份</label>
+                                    <div class="layui-input-inline">
+                                        <select id="select-class-year" name="cname" class="layui-class-year" required lay-filter="select-city">
+                                            <option value="">请选择年份</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">班级名称</label>
+                                    <div class="layui-input-inline">
+                                        <input id="add-class-num" type="text" name="add-class-num-age" value="" lay-verify="roomsn" required autocomplete="off" placeholder="输入专业加班级号..." class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> </label>
+                                    <div class="layui-input-inline">
+                                        <button id="add-btn" class="layui-btn">添加</button>
+                                        <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
