@@ -1,0 +1,49 @@
+<div class="layui-fluid">
+    <div class='layui-row'>
+        <div class='head-btn'>
+            <div class='layui-form'>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级名称</label>
+                    <div class="layui-input-inline">
+                        <select id="class-name" type="text" name="cname" class="layui-input" required lay-verify="classnam">
+                            <option value="">请选择班级名称</option>
+                        </select>
+                    </div>
+
+                    <label class="layui-form-label">班级编号</label>
+                    <div class="layui-input-inline">
+                        <select id="class-number" name="classnum" class="layui-select" required
+                                lay-filter="select-campus">
+                            <option value="">请选择班级编号</option>
+                        </select>
+                    </div>
+
+                    <label class="layui-form-label">班级人数</label>
+                    <div class="layui-input-inline">
+                        <select id="student-number" name="stunumber" class="layui-select" required
+                                lay-filter="select-building">
+                            <option value="">请选择班级人数</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级年份</label>
+                    <div class="layui-input-inline">
+                        <select id="class-year" name="cyear" class="layui-select" required lay-filter="select-floor">
+                            <option value="">请选择班级年份</option>
+                        </select>
+                    </div>
+
+
+
+                    <label class="layui-form-label">  </label>
+                    <div class="layui-input-inline">
+                        <button id="search-btn" class="layui-btn">搜索</button>
+                        <button id="add-btn" class="layui-btn">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="" id="test" lay-filter="test"></table>
+    </div>
+</div>
