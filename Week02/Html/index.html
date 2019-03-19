@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>学生管理系统</title>
+</head>
+
+<body class="layui-layout-body">
+    <style type="text/css">
+    </style>
+    <div id="LAY_app">
+        <div class="layui-layout layui-layout-admin">
+            <!-- 侧边菜单 -->
+            <div class="layui-side layui-side-menu">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title" align="center">
+                        <li class="layui-this">
+                            <i class="layui-icon layui-icon-set-fill">导航</i>
+                        </li>
+                    </ul>
+                    <div class="layui-tab-content" align="left" style="width: 100%;padding: 0px">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-side-scroll" style="width: 100%;">
+                                <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all" style="width: 100%;margin-top: 0px">
+                                    <li data-name="lsdh" class="layui-nav-item layui-nav-itemed">
+                                        <a href="javascript:;" lay-tips="主页">
+                                        <i class="layui-icon layui-icon-log"></i>
+                                        <cite>日常管理</cite>
+                                    </a>
+                                        <dl class="layui-nav-child">
+                                            <dd class="layui-this" id="replace-list">
+                                                <a lay-href="requestForm/replace_list">换新信息</a>
+                                            </dd>
+                                            <dd id="request-list">
+                                                <a lay-href="requestForm/request_list">所有上报信息</a>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                    <li class="layui-nav-item layui-nav-itemed">
+                                        <a href="javascript:" lay-tips="主页">
+                                        <i class="layui-icon layui-icon-home"></i>
+                                        <cite>基础信息管理</cite>
+                                    </a>
+                                        <dl class="layui-nav-child">
+                                            <dd>
+                                                <a href="javascript:;">部门管理</a>
+                                                <dl class="layui-nav-child">
+                                                    <dd id="department-list"><a lay-href="department/department_list">所有部门</a></dd>
+                                                </dl>
+                                            </dd>
+                                            <dd>
+                                                <a href="javascript:;">员工管理</a>
+                                                <dl class="layui-nav-child">
+                                                    <dd id="role-list"><a lay-href="role/role_list">所有员工</a></dd>
+                                                </dl>
+                                            </dd>
+                                            <dd>
+                                                <a href="javascript:;">用户管理</a>
+                                                <dl class="layui-nav-child">
+                                                    <dd id="user-list"><a lay-href="role/user_list">所有用户</a></dd>
+                                                </dl>
+                                            </dd>
+                                            <dd>
+                                                <a href="javascript:;">地点信息管理</a>
+                                                <dl class="layui-nav-child">
+                                                    <dd id="location-list"><a lay-href="location/location_list">地点信息</a></dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 页面标签 -->
+            <div class="layadmin-pagetabs" id="LAY_app_tabs" style="height: 4%">
+                <div class="layui-icon layadmin-tabs-control layui-icon-prev" style="height: 100%">
+                    <a href="javascript:" layadmin-event="flexible" title="侧边伸缩" style="height: 100%">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
+                </div>
+                <!--<div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>-->
+                <!--<div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>-->
+                <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                    <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                        <li class="layui-nav-item" lay-unselect>
+                            <a href="javascript:"></a>
+                            <dl class="layui-nav-child layui-anim-fadein">
+                                <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                                <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                                <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+                <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs" style="height: 100%">
+                    <ul class="layui-tab-title" id="LAY_app_tabsheader" style="height: 100%">
+                        <li lay-id="requestForm/replace_list" lay-attr="requestForm/replace_list" class="layui-this">
+                            换新信息
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 主体内容 -->
+            <hr>
+            <div class="layui-body" id="LAY_app_body" style="top: 12%;">
+                <div class="layadmin-tabsbody-item layui-show">
+                    <iframe id="main_frame" src="requestForm/replace_list" frameborder="0" class="layadmin-iframe"></iframe>
+                </div>
+            </div>
+            <!-- 辅助元素，一般用于移动设备下遮罩 -->
+            <div class="layadmin-body-shade" layadmin-event="shade"></div>
+        </div>
+    </div>
+</body>
+
+</html>
