@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>学生列表</title>
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class='layui-row'>
+        <div class='head-btn'>
+            <div class='layui-form'>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级年份</label>
+                    <div class="layui-input-inline">
+                        <select id="class-year" name="cyear" class="layui-select" required lay-filter="select-year">
+                            <option value="">请选择班级年份</option>
+                        </select>
+                    </div>
+                    <label class="layui-form-label">班级状态</label>
+                    <div class="layui-input-inline">
+                        <select id="class-state" name="cstaate" class="layui-select" required lay-filter="select-state">
+                            <option value="">请选择班级年份</option>
+                        </select>
+                    </div>
+                    <button class="layui-btn" id = "search">搜索</button>
+                    <button class="layui-btn" id = "clear">清空</button>
+                </div>
+            </div>
+        </div>
+        <table class="" id="test" lay-filter="test"></table>
+    </div>
+</div>
+<script src="../../layuiadmin/lib/jquery.min.js"></script>
+<script src="../../layuiadmin/layui/layui.js?t=1"></script>
+<script>
+    let winheight = $(window).height();
+    let tabheight = winheight - 60;
+
+    // 对table
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var option = {
+            id: 'test'
+            , elem: '#test'
+            , url: 'http://localhost:8080/class/classes' //数据接口
+            // 数据填充使用URL会产生分页无效的情况，直接使用data就OK如下
+            // , url: "../json/demoTable.json"
+            //强大的工具toolbar
+            , height: 'full-100'
+            , toolbar: '#toolbar'
+            , page: true
+            , limit: 20
+            , cols: [[ //表头
+                {field: 'cName', title: '班级名称', sort: true, align: 'center'}
+                , {field: 'year', title: '年份', align: 'center'}
+                , {field: 'amount', title: '班级人数', width: 100, sort: true, align: 'center'}
+                , {field: 'state', title: '状态', align: 'center'}
+            ]]
+        }
+        table.render(option);
+
+        //监听表头toolbar
+        //     table.on("toolbar(test)", function (obj) {
+        //         var layEvent = obj.event;
+        //         var tr = obj.tr; //获得当前行 tr 的DOM对象
+        //         var data = obj.data; //获得当前行数据
+        //         console.log("in");
+        //         if (layEvent === 'del-mu') {
+        //             obj.del();
+        //         } else if (layEvent === 'add') {
+        //             console.log("add");
+        //             $("select[name='role']").html("");
+        //             $.ajax({
+        //                 async: false,
+        //                 type: 'POST',
+        //                 url: 'http://localhost:8080/department/get_department',
+        //                 dataType: 'json',
+        //                 success: function (data) {
+        //                     $("select[name='departmentSn']").html("");
+        //                     $("select[name='departmentSn']").append('<option value="">请选择</option>');
+        //                     $.each(data.list, function (key, val) {
+        //                         var option1 = '<option value="' + val.sn + '">' + val.name + '</option>';
+        //                         // var option1 = $("<option>").val(val.rsn).text(val.name);
+        //                         $("select[name='departmentSn']").append(option1);
+        //                         form.render('select');
+        //                     });
+        //                 }
+        //             });
+        //             form.render('select');
+        //
+        //             layer.open({
+        //                 type: 1,
+        //                 title: '添加',
+        //                 area: ['700px', '450px'],
+        //                 content: $('#add-page').html(),
+        //
+        //             });
+        //             form.render();
+        //         }
+        //     });
+        //
+        //     //监听表内toolbar
+        //     table.on("tool(test)", function (obj) {
+        //         var layEvent = obj.event;
+        //         var tr = obj.tr; //获得当前行 tr 的DOM对象
+        //         var data = obj.data; //获得当前行数据
+        //         console.log(data);
+        //         var form = layui.form;
+        //         console.log("in");
+        //         console.log(data);
+        //         var gender = data.gender;
+        //         var departmentSn = data.department.sn;
+        //         var department = data.department.name;
+        //         console.log(departmentSn)
+        //         var role = data.role;
+        //         console.log(role)
+        //
+        //         $.ajax({
+        //             async: false,
+        //             type: 'POST',
+        //             url: 'http://localhost:8080/department/get_department',
+        //             dataType: 'json',
+        //             success: function (data) {
+        //                 $("select[name='departmentSn']").html("");
+        //                 $.each(data.list, function (key, val) {
+        //                     var option1 = '<option value="' + val.sn + '">' + val.name + '</option>';
+        //                     // var option1 = $("<option>").val(val.rsn).text(val.name);
+        //                     $("select[name='departmentSn']").append(option1);
+        //                     form.render('select');
+        //                 });
+        //             }
+        //         });
+        //
+        //         $('#edit-sn').attr("value", data.sn);
+        //         $('#edit-password').attr("value", data.password);
+        //         $('#edit-openid').attr("value", data.openid);
+        //         $('#edit-name').attr("value", data.name);
+        //
+        //         $('#edit-gender input').attr("checked", false);
+        //         $("#edit-gender input[title$=" + gender + "] ").attr("checked", true);
+        //
+        //         $('#edit-phone').attr("value", data.phone);
+        //
+        //         if (layEvent === 'del') {
+        //             obj.del();
+        //         } else if (layEvent === 'edit') {
+        //             console.log("edit");
+        //             console.log( $('#edit-department'))
+        //             $('#edit-department option').attr("selected", false);
+        //             $("#edit-department option[value=" + departmentSn + "]").attr("selected",true);
+        //             form.render('select');
+        //             console.log( $('#edit-department'))
+        //             $("select[name='role']").html("");
+        //             $.ajax({
+        //                 async: false,
+        //                 type: 'POST',
+        //                 url: 'http://localhost:8080/position/get_position',
+        //                 data: {dsn: departmentSn},
+        //                 dataType: 'json',
+        //                 success: function (data) {
+        //                     $("select[name='role']").html("");
+        //                     $.each(data.list, function (key, val) {
+        //                         var option1 = '<option value="' + val.rsn + '">' + val.name + '</option>';
+        //                         $("select[name='role']").append(option1);
+        //                         form.render('select');
+        //                     });
+        //                 }
+        //             });
+        //             form.render('select');
+        //             console.log( $('#edit-role'))
+        //             $('#edit-role option').attr("selected", false);
+        //             $("#edit-role option:contains(" + role + ")").attr("selected", true);
+        //             // $("#edit-role option[value$=" + role + "]").attr("selected", true);
+        //
+        //             layer.open({
+        //                 type: 1,
+        //                 title: '编辑',
+        //                 area: ['700px', '450px'],
+        //                 content: $('#edit-page').html(),
+        //             });
+        //             console.log($('#edit-name').attr('value'));
+        //             form.render();
+        //         } else if (layEvent === 'reset') {
+        //             $.ajax({
+        //                 url: 'http://localhost:8080/role/update',
+        //                 type: 'post',
+        //                 header: {
+        //                     contentType: 'application/json',
+        //                 },
+        //                 data: {
+        //                     sn: data.sn,
+        //                     password: '000000'
+        //                 },
+        //                 success(res) {
+        //                     if (res.success == 'true') {
+        //                         msg('success');
+        //                         console.log('success');
+        //                         alert(res)
+        //                     } else {
+        //                         console.log('fail');
+        //                     }
+        //                 },
+        //                 fail(res) {
+        //                     console.log('fail')
+        //                 }
+        //             })
+        //         }
+        //     });
+        //
+        //     form.on('select(add-dselect)', function (data) {
+        //         console.log("add-dselect")
+        //         $("select[name='role']").html("");
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: 'http://localhost:8080/position/get_position',
+        //             data: {dsn: data.value},
+        //             dataType: 'json',
+        //             success: function (data) {
+        //                 $("select[name='role']").html("");
+        //                 $.each(data.list, function (key, val) {
+        //                     var option1 = '<option value="' + val.rsn + '">' + val.name + '</option>';
+        //                     // var option1 = $("<option>").val(val.rsn).text(val.name);
+        //                     $("select[name='role']").append(option1);
+        //                     form.render('select');
+        //                 });
+        //             }
+        //         });
+        //         form.render('select');
+        //     });
+        //
+        //     form.on('select(edit-dselect)', function (data) {
+        //         console.log("edit-dselect")
+        //         $("select[name='role']").html("");
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: 'http://localhost:8080/position/get_position',
+        //             data: {dsn: data.value},
+        //             dataType: 'json',
+        //             success: function (data) {
+        //                 $("select[name='role']").html("");
+        //                 $.each(data.list, function (key, val) {
+        //                     var option1 = '<option value="' + val.rsn + '">' + val.name + '</option>';
+        //                     $("select[name='role']").append(option1);
+        //                     form.render('select');
+        //                 });
+        //             }
+        //         });
+        //         form.render('select');
+        //     });
+        //
+        //     form.verify({
+        //         sn: function (value) {
+        //             if (value.trim() == "") {
+        //                 return "工号不能为空"
+        //             }
+        //             if (!verify(value)) {
+        //                 return "该用户已存在";
+        //             }
+        //         }
+        //     });
+        // });
+        //
+        // function verify(value) {
+        //     var resCode = true;
+        //     $.ajax({
+        //         async: false, // 使用同步的方法
+        //         data: { //要提交到服务端验证的用户名
+        //             sn: value
+        //         },
+        //         dataType: 'json',
+        //         success: function (result) { //栗子，返回的数据结果：{"rel":true,"message":"用户名已存在！"}
+        //             if (result.had) {
+        //                 resCode = !result.had;
+        //             }
+        //         },
+        //         error: function () {
+        //             return false;
+        //         },
+        //         url: 'http://localhost:8080/role/check_sn' // 这里写你要验证的地址哦。
+        //     });
+        //
+        //     if (!resCode) {
+        //
+        //         return false;
+        //     } else {
+        //         return true;
+        //     }
+
+    })
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="reset">重置密码</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="toolbar">
+    <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del-mu">删除</a>
+</script>
+</body>
+</html>

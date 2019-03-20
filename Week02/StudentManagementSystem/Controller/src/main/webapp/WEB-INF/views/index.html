@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>学生管理系统</title>
+    <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+</head>
+
+<body class="layui-layout-body">
+    <style type="text/css">
+    </style>
+    <div id="LAY_app">
+        <div class="layui-layout layui-layout-admin">
+            <!-- 侧边菜单 -->
+            <div class="layui-side layui-side-menu">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                    <ul class="layui-tab-title" align="center">
+                        <li class="layui-this">
+                            <i class="layui-icon layui-icon-set-fill">导航</i>
+                        </li>
+                    </ul>
+                    <div class="layui-tab-content" align="left" style="width: 100%;padding: 0px">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-side-scroll" style="width: 100%;">
+                                <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all" style="width: 100%;margin-top: 0px">
+                                    <li class="layui-nav-item layui-nav-itemed">
+                                        <a href="javascript:" lay-tips="主页">
+                                        <i class="layui-icon layui-icon-home"></i>
+                                        <cite>基础信息管理</cite>
+                                    </a>
+                                        <dl class="layui-nav-child">
+                                            <dd>
+                                                <a href="javascript:;">班级管理</a>
+                                                <dl class="layui-nav-child">
+                                                    <dd id="class-list"><a lay-href="class/class_list">所有班级</a></dd>
+                                                </dl>
+                                            </dd>
+                                            <dd>
+                                                <a href="javascript:;">学生管理</a>
+                                                <dl class="layui-nav-child">
+                                                    <dd id="student-list"><a lay-href="student/student_list">所有学生</a></dd>
+                                                </dl>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 页面标签 -->
+            <div class="layadmin-pagetabs" id="LAY_app_tabs" style="height: 4%;top:0%">
+                <div class="layui-icon layadmin-tabs-control layui-icon-prev" style="height: 100%">
+                    <a href="javascript:" layadmin-event="flexible" title="侧边伸缩" style="height: 100%">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
+                </div>
+                <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                    <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                        <li class="layui-nav-item" lay-unselect>
+                            <a href="javascript:"></a>
+                            <dl class="layui-nav-child layui-anim-fadein">
+                                <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                                <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                                <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+                <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs" style="height: 100%">
+                    <ul class="layui-tab-title" id="LAY_app_tabsheader" style="height: 100%">
+                        <li lay-id="student/student_list" lay-attr="student/student_list" class="layui-this">
+                            学生信息
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 主体内容 -->
+            <hr>
+            <div class="layui-body" id="LAY_app_body" style="top: 4%;">
+                <div class="layadmin-tabsbody-item layui-show">
+                    <iframe id="main_frame" src="student/student_list" frameborder="0" class="layadmin-iframe"></iframe>
+                </div>
+            </div>
+            <!-- 辅助元素，一般用于移动设备下遮罩 -->
+            <div class="layadmin-body-shade" layadmin-event="shade"></div>
+        </div>
+    </div>
+    <script src="../../layuiadmin/lib/jquery.min.js"></script>
+    <script src="../../layuiadmin/layui/layui.js"></script>
+    <script>
+
+        // 绑定刷新iframe页面
+        $("body").bind("keydown",function(event){
+            if (event.keyCode == 116) {
+                event.preventDefault(); //阻止默认刷新
+                var src = $("#LAY_app_body div[class$=layui-show] iframe").prop("src");
+                console.log(src)
+                $("#LAY_app_body div[class$=layui-show] iframe").attr("src",src);
+
+            }
+        });
+
+        layui.config({
+            base: '../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'element'], function() {
+            var $ = layui.jquery,
+                element = layui.element;
+        });
+    </script>
+</body>
+</html>

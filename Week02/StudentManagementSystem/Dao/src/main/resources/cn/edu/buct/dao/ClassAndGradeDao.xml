@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.buct.dao.ClassAndGradeDao">
+    <resultMap id="classAndGrade" type="ClassAndGrade">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="cName" column="c_name" javaType="String"/>
+        <result property="year" column="year" javaType="String"/>
+        <result property="amount" column="amount" javaType="Integer"/>
+        <result property="state" column="state" javaType="String"/>
+    </resultMap>
+    <insert id="insert" parameterType="Student">
+        insert into `student` values(#{id},#{sid},#{cName},#{year},#{amount},#{state})
+    </insert>
+
+    <update id="update" parameterType="Student">
+        update `student`
+        <trim prefix="set" prefixOverrides=",">
+            <if test="cName!=null">
+                ,c_name=#{cName}
+            </if>
+            <if test="year!=null">
+                ,year=#{year}
+            </if>
+            <if test="state!=null">
+                ,state=#{state}
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <select id="selectAll" resultMap="classAndGrade">
+    select * from class
+    </select>
+
+</mapper>
