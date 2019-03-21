@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>学生跳出页</title>
+</head>
+<body>
+<div id="class-popup">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body" pad15>
+                        <div style="margin: 0 auto; width: 75%">
+                            <form class="layui-form" action="" method="post">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">学号</label>
+                                        <div class="layui-input-inline">
+                                            <input id="add-Student-ID" type="text" name="editStudentID" value="" lay-verify="remark" r
+                                                   autocomplete="off" placeholder="学号..." class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input id="add-Student-Name" type="text" name="editStudentName" value="" lay-verify="remark" r
+                                                   autocomplete="off" placeholder="姓名..." class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">性别</label>
+                                        <div class="layui-input-inline" required id="studentSex">
+                                        <label class="layui-form-label">男</label>
+                                        <input type="radio" name="sex" value="男" title="男" checked="true">
+                                        <label class="layui-form-label">女</label>
+                                        <input type="radio" name="sex" value="女" title="女">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">班级</label>
+                                        <div class="layui-input-inline">
+                                            <select id="add-class" name="editCalss" type="text"
+                                                    autocomplete="off" class="layui-select" lay-filter="addRoomBuilding" lay-search>
+                                                <option value="">选择班级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">年龄</label>
+                                        <div class="layui-input-inline">
+                                            <input id="add-studen-age" type="text" name="editStudenAge" value="" lay-verify="roomsn" required
+                                                   autocomplete="off" placeholder="你的年龄..." class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">籍贯</label>
+                                        <div class="layui-input-inline">
+                                            <input id="add-student-from" type="text" name="editStudentFrom" value="" lay-verify="floor" required
+                                                   autocomplete="off" placeholder="籍贯..." class="layui-input">
+                                        </div>
+                                    </div>                                                                      
+                                    <div class="layui-form-item">
+                                        <div class="layui-input set-center" style="border: 0px;">
+                                            <button id="add-student-submit" name="aeditStudentSubmit" lay-submit class="layui-btn" lay-filter="add-room-submit">确认</button>
+                                            <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
