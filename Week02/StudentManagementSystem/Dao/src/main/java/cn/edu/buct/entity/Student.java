@@ -1,5 +1,7 @@
 package cn.edu.buct.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Student {
@@ -78,7 +80,7 @@ public class Student {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public Date getBirthday() {
         return birthday;
     }

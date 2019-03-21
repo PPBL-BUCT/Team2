@@ -12,6 +12,7 @@
         <result property="nativePlace" column="native_place" javaType="String"/>
         <result property="state" column="state" javaType="String"/>
         <result property="cid" column="c_id" javaType="Integer"/>
+        <result property="cName" column="c_name" javaType="String"/>
     </resultMap>
 
     <insert id="insert" parameterType="Student">
@@ -37,7 +38,7 @@
                 ,age=#{age}
             </if>
             <if test="nativePlace!=null">
-                ,nativePlace=#{nativePlace}
+                ,native_place=#{nativePlace}
             </if>
             <if test="state!=null">
                 ,state=#{state}
@@ -54,11 +55,11 @@
     </select>
 
     <select id="selectAll" resultMap="student">
-        select * from `student`
+        select s.*,c.c_name from `student` s left join `class` c on s.c_id=c.id
     </select>
 
     <select id="selectAllByConditions" resultMap="student">
-        select s.*,c.c_name from student s left join class c on s.c_id=c.id
+        select s.*,c.c_name from `student` s left join `class` c on s.c_id=c.id
 
         <trim prefix="where" prefixOverrides="and">
             <if test="sid!=null">

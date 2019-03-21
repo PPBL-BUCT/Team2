@@ -28,13 +28,13 @@ public class ClassAndGradeController {
     public Map<String,Object> classes()
     {
         Map map = new HashMap();
-        List<ClassAndGrade> buildings = classAndGradeService.getAll();
+        List<ClassAndGrade> classes = classAndGradeService.getAll();
         map.put("code",0);
         map.put("msg","");
-        map.put("count",buildings.size());
+        map.put("count",classes.size());
 
-        map.put("data",buildings);
-        System.out.println(map.get("data").toString());
+        map.put("data",classes);
+        System.out.println(map);
         return map;
     }
 
