@@ -26,16 +26,17 @@
                     </div>
                     <label class="layui-form-label">姓名</label>
                     <div class="layui-input-inline">
-                        <input id="studentNumber" name="studentName" class="layui-select"/>
+                        <input id="sName" name="sName" class="layui-select"/>
                     </div>
                     <label class="layui-form-label">学号</label>
                     <div class="layui-input-inline">
-                        <input id="studentID" name="studentID" class="layui-select"/>
+                        <input id="sid" name="sid" class="layui-select"/>
                     </div>
                     <label class="layui-form-label">籍贯</label>
                     <div class="layui-input-inline">
-                        <input id="homeTown" name="homeTown" class="layui-select"/>
+                        <input id="nativePlace" name="nativePlace" class="layui-select"/>
                     </div>
+
                     <button class="layui-btn" id = "search">搜索</button>
                     <button class="layui-btn" id = "clear">清空</button>
                 </div>
@@ -57,7 +58,7 @@
         var option = {
             id: 'test'
             , elem: '#test'
-            , url: 'http://localhost:8080/student/studentlist' //数据接口
+            , url: 'http://localhost:8081/student/studentlist' //数据接口
             // 数据填充使用URL会产生分页无效的情况，直接使用data就OK如下
             // , url: "../json/demoTable.json"
             //强大的工具toolbar

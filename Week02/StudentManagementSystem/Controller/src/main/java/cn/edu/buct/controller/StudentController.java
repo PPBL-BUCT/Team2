@@ -68,4 +68,45 @@ public class StudentController {
     public String roleList(){
         return "student/student_list";
     }
+
+    @RequestMapping("/studentSearch")
+    public Map<String,Object> search(@RequestParam int page, @RequestParam int limit,String sid, String sName, String nativePlace, Integer cid,String state){
+        Map<String,Object> map = new HashMap<>();
+        List<Student> students = studentService.getAll();
+        List students2;
+        //如果内容为空改为Null
+        if(sid=="") {
+            sid=null;
+        }
+        if (sName=="") {
+            sName=null;
+        }
+        if (nativePlace==""){
+            nativePlace=null;
+        }
+        if(state==""){
+            state=null;
+        }
+        //没有搜索条件则返回所有数据
+        if(sid==null||sName==null||nativePlace==null||cid==null||state==null){
+            studentService.getAll();
+        }
+        else {
+            studentService.getAllByConditions(sid,sName,nativePlace,cid,state);
+        }
+        //分页操作，直接复制
+        if(page * limit -1<students.size()-1) {
+            students2 = students.subList((page - 1)*limit,page * limit -1);
+        }
+        else {
+            students2 = students.subList((page - 1)*limit,students.size());
+        }
+        //渲染表，直接复制
+        map.put("code",0);
+        map.put("msg","");
+        map.put("count",students.size());
+        map.put("data",students2);
+        //返回list渲染
+       return map;
+    }
 }
