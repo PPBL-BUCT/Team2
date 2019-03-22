@@ -369,7 +369,7 @@
                 layer.confirm('确定删除该学生?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost:8080/student/update',
+                        url: 'http://localhost:8081/student/update',
                         data: {
                             id:id,
                             sid: sid,
@@ -397,7 +397,7 @@
                 layer.confirm('确定修改该学生为离校?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost:8080/student/update',
+                        url: 'http://localhost:8081/student/update',
                         data: {
                             id:id,
                             sid: sid,

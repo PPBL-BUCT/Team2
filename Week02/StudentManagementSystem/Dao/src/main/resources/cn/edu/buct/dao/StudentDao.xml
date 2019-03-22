@@ -63,7 +63,7 @@
 
         <trim prefix="where" prefixOverrides="and">
             <if test="sid!=null">
-                and s.sid=#{sid}
+                and s.s_id=#{sid}
             </if>
             <if test="sName!=null">
                 and s.s_name=#{sName}
