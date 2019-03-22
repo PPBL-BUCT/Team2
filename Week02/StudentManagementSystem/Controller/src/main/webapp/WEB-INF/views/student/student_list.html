@@ -174,21 +174,21 @@
 <div class="layui-fluid">
     <div class='layui-row'>
         <div class='head-btn'>
-            <form class='layui-form'>
+            <form class='layui-form' action="">
                 <div class="layui-form-item">
                     <label class="layui-form-label">姓名</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="studentNumber" name="sName" class="layui-input" value=""
+                        <input type="text" id="sName" name="sName" class="layui-input" value=""
                                lay-verify="search_sName"/>
                     </div>
                     <label class="layui-form-label">学号</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="studentID" name="sid" class="layui-input" value=""
+                        <input type="text" id="sid" name="sid" class="layui-input" value=""
                                lay-verify="search_sid"/>
                     </div>
                     <label class="layui-form-label"> </label>
                     <div class="layui-input-inline">
-                        <button class="layui-btn" lay-submit id="search">搜索</button>
+                        <button class="layui-btn" lay-submit id="search" lay-filter="searchsubmit">搜索</button>
                         <button class="layui-btn" type="reset" lay-reset id="clear">清空</button>
                     </div>
                 </div>
@@ -203,6 +203,7 @@
     let winheight = $(window).height();
     let tabheight = winheight - 60;
 
+
     // 对table
     layui.use(['table', 'form', 'laydate'], function () {
         var addStudentIndex;
@@ -210,7 +211,7 @@
         var id;
         var table = layui.table;
         var form = layui.form;
-        var laydate = layui.laydate
+        var laydate = layui.laydate;
         laydate.render({
             elem: '#add-student-birthday'
             , format: 'yyyy-MM-dd'
@@ -222,7 +223,7 @@
         var option = {
             id: 'test'
             , elem: '#test'
-            , url: 'http://localhost:8080/student/studentlist' //数据接口
+            , url: 'http://localhost:8081/student/studentlist' //数据接口
             // 数据填充使用URL会产生分页无效的情况，直接使用data就OK如下
             // , url: "../json/demoTable.json"
             //强大的工具toolbar
@@ -241,8 +242,47 @@
                 , {field: 'cName', title: '班级', align: 'center'}
                 , {field: 'operation', title: '操作', width: 300, toolbar: '#barDemo', align: 'center'}
             ]]
-        }
+        };
         table.render(option);
+
+        form.on('submit(searchsubmit)',function () {
+            var sName;
+            var sid;
+
+            sName = $("#sName").attr("value");
+            sid = $("#sid").attr("value");
+
+            //console.log(sName+"-"+sid);
+            var option3 = {
+                url: 'http://localhost:8081/student/studentSearch' //数据接口
+                , method: 'POST'
+                , where: {
+                    sid:sid,
+                    sName:sName
+                }
+            };
+            table.reload('test', option3);
+            return false;
+        })
+
+        // $("#search").click(function (event) {
+        //     var sName;
+        //     var sid;
+        //
+        //     sName = $("#sName").attr("value");
+        //     sid = $("#sid").attr("value");
+        //
+        //     //console.log(sName+"-"+sid);
+        //     var option3 = {
+        //         url: 'http://localhost:8081/student/studentSearch' //数据接口
+        //         , method: 'POST'
+        //         , where: {
+        //             sid:sid,
+        //             sName:sName
+        //         }
+        //     };
+        //     table.reload('test', option3);
+        // });
 
         //监听表头toolbar
         table.on("toolbar(test)", function (obj) {
@@ -254,7 +294,7 @@
                 $.ajax({
                     async: false,
                     type: 'POST',
-                    url: 'http://localhost:8080/class/classes',
+                    url: 'http://localhost:8081/class/classes',
                     dataType: 'json',
                     success: function (data) {
                         console.log(data)
@@ -302,7 +342,7 @@
             $.ajax({
                 async: false,
                 type: 'POST',
-                url: 'http://localhost:8080/class/classes',
+                url: 'http://localhost:8081/class/classes',
                 dataType: 'json',
                 success: function (data) {
                     console.log(data)
@@ -478,7 +518,7 @@
             // alert(sid + " "+ sName+" "+gender+" "+cid+" "+birthday+" "+nativePlace+" "+state);
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080/student/add',
+                url: 'http://localhost:8081/student/add',
                 data: {
                     sid: sid,
                     sName: sName,
@@ -513,7 +553,7 @@
             // alert(sid + " "+ sName+" "+gender+" "+cid+" "+birthday+" "+nativePlace+" "+state);
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080/student/update',
+                url: 'http://localhost:8081/student/update',
                 data: {
                     id:id,
                     sid: sid,
