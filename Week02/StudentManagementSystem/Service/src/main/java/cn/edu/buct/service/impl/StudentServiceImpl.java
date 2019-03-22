@@ -100,7 +100,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getAllByConditions(String sid, String sName, String nativePlace, Integer cid,String state) {
-        return studentDao.selectAllByConditions(sid,sName,nativePlace,cid,state);
+    public List<Student> getAllByConditions(String sid, String sName) {
+        System.out.println("service层接受到"+studentDao.selectAllByConditions(sid,sName));
+        return studentDao.selectAllByConditions(sid,sName);
     }
 }

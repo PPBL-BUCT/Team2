@@ -68,15 +68,15 @@
             <if test="sName!=null">
                 and s.s_name=#{sName}
             </if>
-            <if test="nativePlace!=null">
-                and s.nativePlace=#{nativePlace}
-            </if>
-            <if test="cid!=null">
-                and c.cid=#{cid}
-            </if>
-            <if test="state!=null">
-                and s.state=#{state}
-            </if>
+            <!--<if test="nativePlace!=null">-->
+                <!--and s.nativePlace=#{nativePlace}-->
+            <!--</if>-->
+            <!--<if test="cid!=null">-->
+                <!--and c.cid=#{cid}-->
+            <!--</if>-->
+            <!--<if test="state!=null">-->
+                <!--and s.state=#{state}-->
+            <!--</if>-->
         </trim>
     </select>
 

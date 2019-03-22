@@ -81,9 +81,10 @@ public class StudentController {
     }
 
     @RequestMapping("/studentSearch")
-    public Map<String,Object> search(@RequestParam int page, @RequestParam int limit,String sid, String sName, String nativePlace, Integer cid,String state){
+    @ResponseBody
+    public Map<String,Object> search(@RequestParam int page, @RequestParam int limit,String sid, String sName){
         Map<String,Object> map = new HashMap<>();
-        List<Student> students = studentService.getAll();
+        List<Student> students;
         List students2;
         //如果内容为空改为Null
         if(sid=="") {
@@ -92,18 +93,17 @@ public class StudentController {
         if (sName=="") {
             sName=null;
         }
-        if (nativePlace==""){
-            nativePlace=null;
-        }
-        if(state==""){
-            state=null;
-        }
+        System.out.println(sName+"controll层");
         //没有搜索条件则返回所有数据
-        if(sid==null||sName==null||nativePlace==null||cid==null||state==null){
-            studentService.getAll();
+        if(sid==null&sName==null){
+            students = studentService.getAll();
+            System.out.println("所有数据。controller");
+
         }
         else {
-            studentService.getAllByConditions(sid,sName,nativePlace,cid,state);
+           // System.out.println(studentService.getAllByConditions(sid,sName));
+            students = studentService.getAllByConditions(sid,sName);
+            System.out.println("controller层接收到"+students);
         }
         //分页操作，直接复制
         if(page * limit -1<students.size()-1) {
@@ -117,6 +117,7 @@ public class StudentController {
         map.put("msg","");
         map.put("count",students.size());
         map.put("data",students2);
+        System.out.println("student2"+students2);
         //返回list渲染
        return map;
     }

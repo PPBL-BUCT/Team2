@@ -10,5 +10,5 @@ public interface StudentService {
     Boolean edit(Student student);
     Student get(Integer bsn);
     List<Student> getAll();
-    List<Student> getAllByConditions(String sid, String sName, String nativePlace, Integer cid, String state);
+    List<Student> getAllByConditions(String sid, String sName);
 }
