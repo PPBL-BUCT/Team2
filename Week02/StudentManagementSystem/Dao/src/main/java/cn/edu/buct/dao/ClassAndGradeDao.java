@@ -11,6 +11,6 @@ public interface ClassAndGradeDao {
     Integer update(ClassAndGrade classAndGrade);
     ClassAndGrade select(Integer id);
     List<ClassAndGrade> selectAll();
-
+    List<ClassAndGrade> selectAllByConditions(@Param("year") String year, @Param("cName") String cName);
 
 }

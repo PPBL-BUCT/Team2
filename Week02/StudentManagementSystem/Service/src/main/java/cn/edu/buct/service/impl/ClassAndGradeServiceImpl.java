@@ -14,7 +14,7 @@ public class ClassAndGradeServiceImpl implements ClassAndGradeService {
     @Qualifier(value = "classAndGradeDao")
     @Autowired
     private ClassAndGradeDao classAndGradeDao;
-//
+
     public Boolean add(ClassAndGrade classAndGrade) {
         classAndGrade.setAmount(0);
         int num = classAndGradeDao.insert(classAndGrade);
@@ -26,51 +26,17 @@ public class ClassAndGradeServiceImpl implements ClassAndGradeService {
         int num = classAndGradeDao.update(classAndGrade);
         return num>0;
     }
-//
-//    public void remove(String sn) {
-//        classAndGradeDao.delete(sn);
-//    }
-//
+
     public ClassAndGrade get(Integer id) {
         return classAndGradeDao.select(id);
     }
-//
-//    public ClassAndGrade getRoleByOpenId(String openid){
-//        List<ClassAndGrade> list = classAndGradeDao.selectByOpenId(openid);
-//        return list.get(0);
-//    }
-//
-//    public Boolean getByOpenId(String openid) {
-//        if(openid!=null)
-//        {
-//            List<ClassAndGrade> list = classAndGradeDao.selectByOpenId(openid);
-//            if (!list.isEmpty())
-//            {
-//                return true;
-//            }
-//            else{
-//                return false;
-//            }
-//        }
-//        else {
-//            return false;
-//        }
-//    }
-//
+
     public List<ClassAndGrade> getAll() {
         return classAndGradeDao.selectAll();
     }
-//
-//    @Override
-//    public List<ClassAndGrade> getEmployee() {
-//        return classAndGradeDao.selectEmployee();
-//    }
-//
-//    public List<ClassAndGrade> getUser() {
-//        return classAndGradeDao.selectUser();
-//    }
-//
-//    public List<ClassAndGrade> getByRole(String role) {
-//        return classAndGradeDao.selectByRole(role);
-//    }
+
+    public List<ClassAndGrade> getAllByConditions(String year, String cName) {
+        System.out.println("service层接受到"+classAndGradeDao.selectAllByConditions(year,cName));
+        return classAndGradeDao.selectAllByConditions(year,cName);
+    }
 }

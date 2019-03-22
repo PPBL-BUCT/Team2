@@ -39,4 +39,16 @@
     select * from class
     </select>
 
+    <select id="selectAllByConditions" resultMap="classAndGrade">
+        select * from `class`
+
+        <trim prefix="where" prefixOverrides="and">
+            <if test="cName!=null">
+                and c_name=#{cName}
+            </if>
+            <if test="year!=null">
+                and year=#{year}
+            </if>
+        </trim>
+    </select>
 </mapper>

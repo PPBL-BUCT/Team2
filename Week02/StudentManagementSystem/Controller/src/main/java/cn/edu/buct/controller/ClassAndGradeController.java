@@ -77,4 +77,46 @@ public class ClassAndGradeController {
     public String roleList(){
         return "class/class_list";
     }
+
+    @RequestMapping("/classSearch")
+    @ResponseBody
+    public Map<String,Object> search(@RequestParam int page, @RequestParam int limit,String year, String cName){
+        Map<String,Object> map = new HashMap<>();
+        List<ClassAndGrade> classAndGrades;
+        List classAndGrades2;
+        //如果内容为空改为Null
+        if(year=="") {
+            year=null;
+        }
+        if (cName=="") {
+            cName=null;
+        }
+        System.out.println(cName+"controll层");
+        //没有搜索条件则返回所有数据
+        if(year==null&&cName==null){
+            classAndGrades = classAndGradeService.getAll();
+            System.out.println("所有数据。controller");
+
+        }
+        else {
+            // System.out.println(studentService.getAllByConditions(sid,sName));
+            classAndGrades = classAndGradeService.getAllByConditions(year,cName);
+            System.out.println("controller层接收到"+classAndGrades);
+        }
+        //分页操作，直接复制
+        if(page * limit -1<classAndGrades.size()-1) {
+            classAndGrades2 = classAndGrades.subList((page - 1)*limit,page * limit -1);
+        }
+        else {
+            classAndGrades2 = classAndGrades.subList((page - 1)*limit,classAndGrades.size());
+        }
+        //渲染表，直接复制
+        map.put("code",0);
+        map.put("msg","");
+        map.put("count",classAndGrades.size());
+        map.put("data",classAndGrades2);
+        System.out.println("classAndGrade2"+classAndGrades2);
+        //返回list渲染
+        return map;
+    }
 }

@@ -114,16 +114,16 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">班级年份</label>
                         <div class="layui-input-inline">
-                            <input type="text" id="search-class-year" name="year" value="" lay-verify="select_year"
+                            <input type="text" id="search-class-year" name="year" value="" lay-verify="search_year"
                                    class="layui-input" autocomplete="off" placeholder="输入年份...">
                         </div>
                         <label class="layui-form-label">班级名称</label>
                         <div class="layui-input-inline">
-                            <input id="search-class-name" type="text" name="cName" value="" lay-verify="select_cName"
+                            <input id="search-class-name" type="text" name="cName" value="" lay-verify="search_cName"
                                    autocomplete="off" placeholder="输入专业加班级号..." class="layui-input">
                         </div>
                         <label class="layui-form-label"> </label>
-                        <button class="layui-btn" lay-submit id="search">搜索</button>
+                        <button class="layui-btn" lay-submit id="search" lay-filter="searchclass">搜索</button>
                         <button class="layui-btn" type="reset" id="clear">清空</button>
                     </div>
                 </div>
@@ -200,15 +200,11 @@
                 layer.confirm('确定删除该班级?', {icon: 3, title: '提示'}, function (index) {
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost:8080/student/update',
+                        url: 'http://localhost:8080/class/update',
                         data: {
                             id: id,
-                            sid: sid,
-                            sName: sName,
-                            gender: gender,
-                            cid: cid,
-                            birthday: birthday,
-                            nativePlace: nativePlace,
+                            year: year,
+                            cName: cName,
                             state: "删除"
                         },
                         dataType: 'json',
@@ -315,6 +311,25 @@
 
         });
 
+        form.on('submit(searchclass)',function () {
+            var cName;
+            var year;
+
+            cName = $("#search-class-name").attr("value");
+            year = $("#search-class-year").attr("value");
+
+            //console.log(sName+"-"+sid);
+            var option3 = {
+                url: 'http://localhost:8080/class/classSearch' //数据接口
+                , method: 'POST'
+                , where: {
+                    year:year,
+                    cName:cName
+                }
+            };
+            table.reload('test', option3);
+            return false;
+        })
 
         form.on('submit(addClassSubmit)', function () {
             var year = $("#add-class-year").val();
