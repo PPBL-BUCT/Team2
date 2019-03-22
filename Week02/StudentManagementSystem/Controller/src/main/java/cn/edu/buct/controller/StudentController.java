@@ -129,7 +129,7 @@ public class StudentController {
 
         }
         else {
-           // System.out.println(studentService.getAllByConditions(sid,sName));
+            // System.out.println(studentService.getAllByConditions(sid,sName));
             students = studentService.getAllByConditions(sid,sName);
             System.out.println("controller层接收到"+students);
         }
@@ -147,6 +147,6 @@ public class StudentController {
         map.put("data",students2);
         System.out.println("student2"+students2);
         //返回list渲染
-       return map;
+        return map;
     }
 }

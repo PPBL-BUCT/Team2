@@ -11,11 +11,5 @@
         <module name="Service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Controller" target="1.7" />
-      <module name="Dao" target="1.8" />
-      <module name="Service" target="1.8" />
-      <module name="StudentManagementSystem" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
