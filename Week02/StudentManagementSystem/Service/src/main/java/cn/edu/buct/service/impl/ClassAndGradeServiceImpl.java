@@ -16,6 +16,7 @@ public class ClassAndGradeServiceImpl implements ClassAndGradeService {
     private ClassAndGradeDao classAndGradeDao;
 //
     public Boolean add(ClassAndGrade classAndGrade) {
+        classAndGrade.setAmount(0);
         int num = classAndGradeDao.insert(classAndGrade);
         return num>0;
     }
@@ -30,9 +31,9 @@ public class ClassAndGradeServiceImpl implements ClassAndGradeService {
 //        classAndGradeDao.delete(sn);
 //    }
 //
-//    public ClassAndGrade get(String sn) {
-//        return classAndGradeDao.select(sn);
-//    }
+    public ClassAndGrade get(Integer id) {
+        return classAndGradeDao.select(id);
+    }
 //
 //    public ClassAndGrade getRoleByOpenId(String openid){
 //        List<ClassAndGrade> list = classAndGradeDao.selectByOpenId(openid);

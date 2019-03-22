@@ -9,6 +9,7 @@ import java.util.List;
 public interface ClassAndGradeDao {
     Integer insert(ClassAndGrade classAndGrade);
     Integer update(ClassAndGrade classAndGrade);
+    ClassAndGrade select(Integer id);
     List<ClassAndGrade> selectAll();
 
 

@@ -7,7 +7,7 @@ import java.util.List;
 public interface ClassAndGradeService {
     Boolean add(ClassAndGrade classAndGrade);
     Boolean edit(ClassAndGrade classAndGrade);
-//    ClassAndGrade get(String sn);
+    ClassAndGrade get(Integer id);
 //    Boolean getByOpenId(String openid);
 //    ClassAndGrade getRoleByOpenId(String openid);
     List<ClassAndGrade> getAll();

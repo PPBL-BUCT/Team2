@@ -287,6 +287,10 @@
             var layEvent = obj.event;
             var tr = obj.tr; //获得当前行 tr 的DOM对象
             var data = obj.data; //获得当前行数据
+
+            var sid= data.sid;
+            var sName = data.sName;
+            var birthday = data.birthday;
             var gender = data.gender;
             var cid = data.cid;
             var cName = data.cName;
@@ -322,7 +326,87 @@
             $("#edit-student-gender input[title$=" + gender + "] ").attr("checked", true);
 
             if (layEvent === 'del') {
-                obj.del();
+                layer.confirm('确定删除该学生?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://localhost:8080/student/update',
+                        data: {
+                            id:id,
+                            sid: sid,
+                            sName: sName,
+                            gender: gender,
+                            cid: cid,
+                            birthday: birthday,
+                            nativePlace: nativePlace,
+                            state:"删除"
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            if(result){
+                                init();
+                            }
+                            else {
+                                alert("error")
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
+
+            }else if (layEvent === 'leftSchool'){
+                layer.confirm('确定修改该学生为离校?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://localhost:8080/student/update',
+                        data: {
+                            id:id,
+                            sid: sid,
+                            sName: sName,
+                            gender: gender,
+                            cid: cid,
+                            birthday: birthday,
+                            nativePlace: nativePlace,
+                            state:"离校"
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            if(result){
+                                init();
+                            }
+                            else {
+                                alert("error")
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
+            }else if (layEvent === 'inSchool'){
+                layer.confirm('确定修改该学生为在读?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://localhost:8080/student/update',
+                        data: {
+                            id:id,
+                            sid: sid,
+                            sName: sName,
+                            gender: gender,
+                            cid: cid,
+                            birthday: birthday,
+                            nativePlace: nativePlace,
+                            state:"在读"
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            if(result){
+                                init();
+                            }
+                            else {
+                                alert("error")
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
             } else if (layEvent === 'edit') {
                 console.log("edit");
                 $('#edit-select-class option').attr("selected", false);
@@ -391,7 +475,7 @@
             var birthday = $("#add-student-birthday").val();
             var nativePlace = $("#add-student-native-place").val();
             var state = $("#add-select-state option:selected").val();
-            alert(sid + " "+ sName+" "+gender+" "+cid+" "+birthday+" "+nativePlace+" "+state);
+            // alert(sid + " "+ sName+" "+gender+" "+cid+" "+birthday+" "+nativePlace+" "+state);
             $.ajax({
                 type: 'POST',
                 url: 'http://localhost:8080/student/add',
@@ -408,6 +492,7 @@
                 success: function (result) {
                     if(result){
                         layer.close(addStudentIndex);
+                        init();
                     }
                     else {
                         alert("error")
@@ -425,7 +510,7 @@
             var birthday = $("#edit-student-birthday").val();
             var nativePlace = $("#edit-student-native-place").val();
             var state = $("#edit-select-state option:selected").val();
-            alert(sid + " "+ sName+" "+gender+" "+cid+" "+birthday+" "+nativePlace+" "+state);
+            // alert(sid + " "+ sName+" "+gender+" "+cid+" "+birthday+" "+nativePlace+" "+state);
             $.ajax({
                 type: 'POST',
                 url: 'http://localhost:8080/student/update',
@@ -470,7 +555,12 @@
 </script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">修改状态</a>
+    {{#  if(d.state == '在读'){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="leftSchool">离校</a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="inSchool">在读</a>
+    {{#  } }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script type="text/html" id="toolbar">
     <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>

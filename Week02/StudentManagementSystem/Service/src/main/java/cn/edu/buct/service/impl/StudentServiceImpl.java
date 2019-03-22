@@ -1,6 +1,8 @@
 package cn.edu.buct.service.impl;
 
+import cn.edu.buct.dao.ClassAndGradeDao;
 import cn.edu.buct.dao.StudentDao;
+import cn.edu.buct.entity.ClassAndGrade;
 import cn.edu.buct.entity.Student;
 import cn.edu.buct.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class StudentServiceImpl implements StudentService {
     @Qualifier(value = "studentDao")
     @Autowired
     private StudentDao studentDao;
+    @Qualifier(value = "classAndGradeDao")
+    @Autowired
+    private ClassAndGradeDao classAndGradeDao;
 
     public Boolean add(Student student) {
         Date birthday = student.getBirthday();
@@ -50,7 +55,16 @@ public class StudentServiceImpl implements StudentService {
         }
         student.setAge(age);
         int i = studentDao.insert(student);
-        return i>0;
+        int j=0;
+        if(i>0){
+            ClassAndGrade classAndGrade = classAndGradeDao.select(student.getCid());
+            int amount = classAndGrade.getAmount();
+            amount++;
+            classAndGrade.setAmount(amount);
+            System.out.println(classAndGrade);
+            j=classAndGradeDao.update(classAndGrade);
+        }
+        return j>0;
     }
 
     public Boolean edit(Student student) {

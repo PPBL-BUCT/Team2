@@ -56,7 +56,20 @@ public class StudentController {
     @ResponseBody
     public boolean add(Student student){
         System.out.println(student);
-        boolean flag = studentService.add(student);
+        String sid = student.getSid();
+        String sName = student.getsName();
+        String gender = student.getGender();
+        Date birthday = student.getBirthday();
+        String nativePlace = student.getNativePlace();
+        String state = student.getState();
+        Integer cid = student.getCid();
+        boolean flag;
+        if (sid == ""||sid == null||sName == ""||sName == null||gender == ""||gender == null||nativePlace == ""||nativePlace == null||
+                state == ""||state == null||birthday == null||cid == null){
+            flag = false;
+        }else{
+            flag = studentService.add(student);
+        }
         return flag;
     }
 
@@ -70,7 +83,22 @@ public class StudentController {
     @RequestMapping("/update")
     @ResponseBody
     public boolean update(Student student){
-        boolean flag = studentService.edit(student);
+        System.out.println(student);
+        Integer id = student.getId();
+        String sid = student.getSid();
+        String sName = student.getsName();
+        String gender = student.getGender();
+        Date birthday = student.getBirthday();
+        String nativePlace = student.getNativePlace();
+        String state = student.getState();
+        Integer cid = student.getCid();
+        boolean flag;
+        if (sid == ""||sid == null||sName == ""||sName == null||gender == ""||gender == null||nativePlace == ""||nativePlace == null||
+                state == ""||state == null||birthday == null||cid == null||id == null){
+            flag = false;
+        }else {
+            flag = studentService.edit(student);
+        }
         return flag;
 
     }

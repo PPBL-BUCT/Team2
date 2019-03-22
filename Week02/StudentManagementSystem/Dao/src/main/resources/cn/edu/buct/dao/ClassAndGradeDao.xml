@@ -10,17 +10,20 @@
         <result property="state" column="state" javaType="String"/>
     </resultMap>
     <insert id="insert" parameterType="Student">
-        insert into `student` values(#{id},#{sid},#{cName},#{year},#{amount},#{state})
+        insert into `class` values(#{id},#{cName},#{year},#{amount},#{state})
     </insert>
 
     <update id="update" parameterType="Student">
-        update `student`
+        update `class`
         <trim prefix="set" prefixOverrides=",">
             <if test="cName!=null">
                 ,c_name=#{cName}
             </if>
             <if test="year!=null">
                 ,year=#{year}
+            </if>
+            <if test="amount!=null">
+                ,amount=#{amount}
             </if>
             <if test="state!=null">
                 ,state=#{state}
@@ -29,6 +32,9 @@
         where id=#{id}
     </update>
 
+    <select id="select" resultMap="classAndGrade" parameterType="Integer">
+    select * from class where id=#{id}
+    </select>
     <select id="selectAll" resultMap="classAndGrade">
     select * from class
     </select>
