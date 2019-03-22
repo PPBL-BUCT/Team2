@@ -13,7 +13,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/studentmc?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=GMT"/>
         <property name="username" value="root"/>
-        <property name="password" value="lanshan73292"/>
+        <property name="password" value="Jff4090171"/>
     </bean>
     <!--配置SessionFactory-->
     <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

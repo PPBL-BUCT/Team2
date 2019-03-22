@@ -12,5 +12,5 @@ public interface StudentDao {
     Integer update(Student student);
     Student select(Integer id);
     List<Student> selectAll();
-    List<Student> selectAllByConditions(@Param("sid") String sid, @Param("sName") Integer sName, @Param("nativePlace") String nativePlace, @Param("cid") Integer cid, @Param("state") String state);
+    List<Student> selectAllByConditions(@Param("sid") String sid, @Param("sName") String sName);
 }

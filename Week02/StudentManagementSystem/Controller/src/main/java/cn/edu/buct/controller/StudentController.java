@@ -107,4 +107,46 @@ public class StudentController {
     public String roleList(){
         return "student/student_list";
     }
+
+    @RequestMapping("/studentSearch")
+    @ResponseBody
+    public Map<String,Object> search(@RequestParam int page, @RequestParam int limit,String sid, String sName){
+        Map<String,Object> map = new HashMap<>();
+        List<Student> students;
+        List students2;
+        //如果内容为空改为Null
+        if(sid=="") {
+            sid=null;
+        }
+        if (sName=="") {
+            sName=null;
+        }
+        System.out.println(sName+"controll层");
+        //没有搜索条件则返回所有数据
+        if(sid==null&sName==null){
+            students = studentService.getAll();
+            System.out.println("所有数据。controller");
+
+        }
+        else {
+           // System.out.println(studentService.getAllByConditions(sid,sName));
+            students = studentService.getAllByConditions(sid,sName);
+            System.out.println("controller层接收到"+students);
+        }
+        //分页操作，直接复制
+        if(page * limit -1<students.size()-1) {
+            students2 = students.subList((page - 1)*limit,page * limit -1);
+        }
+        else {
+            students2 = students.subList((page - 1)*limit,students.size());
+        }
+        //渲染表，直接复制
+        map.put("code",0);
+        map.put("msg","");
+        map.put("count",students.size());
+        map.put("data",students2);
+        System.out.println("student2"+students2);
+        //返回list渲染
+       return map;
+    }
 }
