@@ -8,6 +8,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/Dao/pom.xml" />
+        <option value="$PROJECT_DIR$/Service/pom.xml" />
       </list>
     </option>
   </component>
