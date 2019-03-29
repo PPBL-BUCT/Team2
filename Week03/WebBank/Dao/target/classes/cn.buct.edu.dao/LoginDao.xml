@@ -2,10 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cn.edu.buct.dao.LoginDao">
-    <resultMap id="loginDao" type="LoginDao">
+    <resultMap id="loginDao" type="User">
         <id property="uid" column="userid" javaType="String"/>
         <result property="un" column="username" javaType="String"/>
         <result property="pw" column="password" javaType="String"/>
+        <result property="tm" column="times" javaType="Integer"/>
 
         <!--<association property="cid" column="c_id" javaType="classes" >-->
             <!--<id property="cname" column="c_name" javaType="String"/>-->
@@ -13,12 +14,12 @@
         <!--</association>-->
     </resultMap>
 
-    <insert id="insert" parameterType="LoginDao">
+    <insert id="insert" parameterType="User">
 
-        insert into `User` values(#{uid},#{pw},#{un})
+        insert into `User` values(#{uid},#{pw},#{un},#{tm})
     </insert>
 
-    <update id="update" parameterType="LoginDao">
+    <update id="update" parameterType="User">
         update `user`
         <trim prefix="set" prefixOverrides=",">
             <if test="un!=null">
@@ -26,6 +27,9 @@
             </if>
             <if test="pw!=null">
                 ,password=#{pw}
+            </if>
+            <if test="tm!=null">
+                ,times=#{tm}
             </if>
 
         </trim>
@@ -35,11 +39,14 @@
     <select id="select" resultMap="loginDao" parameterType="Integer">
     select * from User where uid=#{uid}
     </select>
+    <select id="selectbyUserName" resultMap="loginDao" parameterType="Integer">
+    select * from User where un=#{un}
+    </select>
     <select id="selectAll" resultMap="loginDao">
     select * from User
     </select>
     <select id="selectAllByConditions" resultMap="loginDao">
-        select u.* from `user` u
+        select * from `user`
 
         <trim prefix="where" prefixOverrides="and">
             <if test="un!=null">
@@ -47,6 +54,9 @@
             </if>
             <if test="pw!=null">
                 and password=#{pw}
+            </if>
+            <if test="tm!=null">
+                and times=#{tm}
             </if>
 
             <!--<if test="amount!=null">-->
