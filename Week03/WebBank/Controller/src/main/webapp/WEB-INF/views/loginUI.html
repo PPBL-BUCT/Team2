@@ -53,15 +53,45 @@
 </div>
 
 <script src="../../layui/layui.js"></script>
-
-
+<script src="../../components/core-min.js"></script>
+<script src="../../components/sha256.js"></script>
+<script src="../../rsa.js"></script>
+<script src="../../aes.js"></script>
 <script>
     layui.use(['jquery','form'], function(){
 
         $ = layui.jquery;
         var form = layui.form;
+        var aesKey = getKey();
+        var encryptKey = RSA(aesKey);
 
+        form.on('submit(login)',function(){
+            var userName=$("#userName").attr('value');
+            var passWord=$("#passWord").attr('value');
+            var enPassWord = CryptoJS.SHA256(passWord);
+            var json = {
+                "userName": userName,
+                "passWord": enPassWord
+            }
+            var cipherText = AESEnc(aesKey,json);
+            var plainText = AESDec(aesKey,cipherText);
+            console.log("密文: " + cipherText);
+            console.log("明文: " + plainText);
 
+            $.ajax({
+                type: "POST",
+                url:"/login_in",
+                dataType:'json',
+                data: {
+                    "requestData":json,
+                    "encryptKey":encryptKey
+                },
+                contentType: "application/json",
+                success: function(result) {
+                    alert("密文:"+cipherText);
+                    alert("明文:" + plainText);
+                }
+            });
 
         form.on('submit(login)',function(){
             console.log("in")
