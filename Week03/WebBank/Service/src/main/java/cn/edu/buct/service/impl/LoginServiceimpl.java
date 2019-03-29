@@ -4,7 +4,6 @@ import cn.edu.buct.dao.LoginDao;
 import cn.edu.buct.entity.*;
 import cn.edu.buct.global.*;
 import cn.edu.buct.service.LoginService;
-import jdk.nashorn.internal.parser.JSONParser;
 import com.alibaba.fastjson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +14,7 @@ import java.util.Map;
 @Service("loginService")
 public class LoginServiceimpl implements LoginService {
     @Autowired
+    @Qualifier(value = "loginDao")
     private LoginDao loginDao;
 
     public Verification Decode(String enData, String enKey) {
@@ -22,6 +22,7 @@ public class LoginServiceimpl implements LoginService {
         try {
             String key = RSAUtils.decryptByPrivateKey(enKey);
             String plaionText = AESUtils.decryptData(key, enData);
+            System.out.println(plaionText);
             //HashMap<String, Object> hashMap=JSON.parseObject(plaionText, HashMap.class);
             JSON json;
             json = JSON.parseObject(plaionText);
@@ -49,6 +50,12 @@ public class LoginServiceimpl implements LoginService {
 
     @Override
     public User getbyUserName(String un) {
-        return loginDao.selectbyUserName(un);
+        return loginDao.selectByUserName(un);
+    }
+
+    @Override
+    public boolean editTimes() {
+        int i = loginDao.updateTimes();
+        return i>0;
     }
 }

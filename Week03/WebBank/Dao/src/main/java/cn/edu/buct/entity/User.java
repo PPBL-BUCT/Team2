@@ -2,7 +2,7 @@ package cn.edu.buct.entity;
 
 public class User {
     private String uid;
-    private String um;
+    private String un;
     private String pw;
     private Integer tm;
 
@@ -14,12 +14,12 @@ public class User {
         this.uid = uid;
     }
 
-    public String getUm() {
-        return um;
+    public String getUn() {
+        return un;
     }
 
-    public void setUm(String um) {
-        this.um = um;
+    public void setUn(String un) {
+        this.un = un;
     }
 
     public String getPw() {
@@ -36,6 +36,16 @@ public class User {
 
     public void setTm(Integer tm) {
         this.tm = tm;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid='" + uid + '\'' +
+                ", un='" + un + '\'' +
+                ", pw='" + pw + '\'' +
+                ", tm=" + tm +
+                '}';
     }
 }
 
