@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class AESUtils {
 
 	/**偏移量,必须是16位字符串*/
-    private static final String IV_STRING = "16-Bytes--String";
+    private static final String IV_STRING = "LANSHANKAFEI6666";
 
     /**
      * 默认的密钥
