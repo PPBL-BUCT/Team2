@@ -31,13 +31,13 @@ public class GlobalController {
     //@RequestParam String userName, @RequestParam String passWord, @RequestParam String secureCode
     public String submit(HttpSession session, HttpServletResponse response, @RequestParam String requestData, @RequestParam String encryptKey) throws IOException {
         String generateCode = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-
+        System.out.println(generateCode);
         Verification decodeVerification = new Verification();
         decodeVerification = loginService.Decode(requestData,encryptKey);
         String userName = decodeVerification.getUserName();
         String passWord = decodeVerification.getPassWord();
         String secureCode = decodeVerification.getIdentifyingCode();
-
+        System.out.println(userName+passWord+secureCode);
         User user = loginService.getbyUserName(userName);//搜索数据库返回密码
         String pwFromDatabase = null;
         if (secureCode != generateCode) {

@@ -114,8 +114,15 @@
                 },
                 success:function (data) {
                     console.log("123444444")
+                    if (data.equals("成功")) {
+                        console.log(data);
+                    } else {
+                        $("#warn").removeAttr("hidden");
+                        $("#warn").text(data);
+                        changeCaptcha();
+                    }
                 }
-            })
+            });
             return false;
         })
         // form.on('submit(login)',function(){
