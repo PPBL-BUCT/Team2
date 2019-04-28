@@ -13,5 +13,5 @@ public interface LoginService {
     User getbyUserName(String un);
     boolean editTimes();
     Map<String, Object> login(HttpSession session, String requestData, String encryptKey);
-    Map<String, Object> register(String requestData, String encryptKey);
+    Integer addUser(User user);
 }

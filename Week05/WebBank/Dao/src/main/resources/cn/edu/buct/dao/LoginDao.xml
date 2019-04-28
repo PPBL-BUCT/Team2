@@ -42,4 +42,8 @@
         select * from `user` where userid=#{uid};
     </select>
 
+    <insert id="insertUser" parameterType="User" >
+        insert into  `user` values (#{un},#{pw},#{uid},#{tm},#{phone},#{name})
+    </insert>
+
 </mapper>

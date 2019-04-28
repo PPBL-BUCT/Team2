@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../layui/css/mainPage.css">
 </head>
-<body style="text-align: -webkit-center;height: 100%;overflow: hidden">
+<body style="text-align: -webkit-center;height: 100%;overflow: scroll">
 <div hidden id="personalTranferConfirmPage">
     <div class="layui-fluid">
         <form class="layui-form" action="" method="post">
@@ -221,9 +221,9 @@
                 <fieldset id="activities_wrapper" class="layui-elem-field cust-card">
                     <legend>近期业务</legend>
                     <div class="layui-field-box">
-                        <div id="businessA"></div>
-                        <div id="businessB"></div>
-                        <div id="businessC"></div>
+                        <!--<div id="businessA"></div>-->
+                        <!--<div id="businessB"></div>-->
+                        <!--<div id="businessC"></div>-->
                         <!--<div id="businessD"></div>-->
                     </div>
                 </fieldset>
@@ -256,7 +256,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label layui-icon">密码 &#xe678;</label>
                                 <div class="layui-input-block">
-                                    <input id="password" type="text" name="" placeholder="请输入密码" autocomplete="off"
+                                    <input id="password" type="password" name="" placeholder="请输入密码" autocomplete="off"
                                            class="layui-input" lay-verify="required|paymentpassword">
                                 </div>
                             </div>
@@ -395,7 +395,8 @@
                                     <label class="layui-form-label">交易密码</label>
                                     <div class="layui-input-block">
                                         <input id="personalTransferPassWord" type="password" name="title"
-                                               lay-verify="required|paymentpassword" placeholder="请输入交易密码" autocomplete="off"
+                                               lay-verify="required|paymentpassword" placeholder="请输入交易密码"
+                                               autocomplete="off"
                                                class="layui-input">
                                     </div>
                                 </div>
@@ -492,7 +493,8 @@
                                     <label class="layui-form-label">交易密码</label>
                                     <div class="layui-input-block">
                                         <input id="otherTransferPassWord" type="password" name="title"
-                                               lay-verify="required|paymentpassword" placeholder="请输入交易密码" autocomplete="off"
+                                               lay-verify="required|paymentpassword" placeholder="请输入交易密码"
+                                               autocomplete="off"
                                                class="layui-input">
                                     </div>
                                 </div>
@@ -559,10 +561,13 @@
                 </div>
             </div>
         </div>
-        <div id="footer"></div>
     </div>
 </div>
 </body>
+<script src="../../components/core-min.js"></script>
+<script src="../../components/sha256.js"></script>
+<script src="../../rsa.js"></script>
+<script src="../../aes.js"></script>
 <script src="../../layui/layui.js"></script>
 <script>
 
@@ -714,8 +719,8 @@
             //渲染日志表格
             table.render({
                 elem: '#loglist'
-                , height: 312
-                , url: '' //数据接口
+                , height: 312//'full-100'
+                , url: '/logSearchAll' //数据接口
                 , page: true //开启分页
                 , cols: [[ //表头
                     {field: 'lid', title: '流水号', width: 180}
@@ -754,22 +759,16 @@
                     , {field: 'usage', title: '交易用途', width: 100}
                     , {field: 'currency', title: '币种', width: 60}
                     , {field: 'payeeAccountName', title: '收款人姓名', width: 100}
-                    , {field: 'payerAccountNo', title: '付款账户', width: 220}
-                    , {field: 'payeeAccountNo', title: '收款账户', width: 220}
-                    // , {field: 'status', title: '状态', width: 70}
-                    // , {field: 'transName', title: '转账类型', width: 100}
+                    , {field: 'payerAccountNo', title: '付款账户', width: 150}
+                    , {field: 'payeeAccountNo', title: '收款账户', width: 150}
                     , {
-                        field: 'transTime', title: '转账时间', width: 200
+                        field: 'transTime', title: '转账时间', width: 160
                         , templet: function (d) {
-                            if(d.transTime!=null){
+                            if (d.transTime != null) {
                                 return layui.util.toDateString(d.transTime, 'yyyy-MM-dd HH:mm:ss')
-                            }else{
+                            } else {
                                 return '';
                             }
-                            // var newTime = new Date(d.transTime);
-
-                            // return layui.laytpl.toDateString(d.transTime);
-                            // return newTime;
                         }
                     }
 
@@ -799,7 +798,7 @@
                 success: function (data) {
                     console.log(data.success);
 
-                        layer.alert(data.success);
+                    layer.alert(data.success);
 
                     var cardNumber = $("#cardNumber").val("");
                     var password = $("#password").val("");
@@ -864,6 +863,7 @@
         table.on("tool(cardlist-table)", function (obj) {
             var layEvent = obj.event;
             var tr = obj.tr; //获得当前行 tr 的DOM对象
+            console.log(tr.selector)
             var data = obj.data; //获得当前行数据
             var cardnumber = data.accountNumber;
             console.log(cardnumber);
@@ -883,13 +883,13 @@
                                 balance: ''
                             });
                             hiddenCode = 0;
-                            $('#hideAmount').text('余额');
+                            $(tr.selector+' a[name=hideAmount]').text('余额');
                         } else {
                             obj.update({
                                 balance: result.balance
                             });
                             hiddenCode = 1;
-                            $('#hideAmount').text('隐藏余额');
+                            $(tr.selector+' a[name=hideAmount]').text('隐藏余额');
                         }
 
                     }
@@ -929,9 +929,9 @@
             personalTransferIndex = layer.open({
                 type: 1,
                 title: '确认个人转账信息',
-                area: ['400px', '550px'],
+                area: ['450px', '550px'],
                 content: $('#personalTranferConfirmPage'),
-                end:function () {
+                end: function () {
                     init();
                 }
             });
@@ -940,25 +940,9 @@
         });
         //他人转账信息确认界面
         form.on('submit(otherTransferConfirm)', function () {
-            $.ajax({
-                type: 'POST',
-                url: '/sendSMS',
-                data: {},
-                dataType: 'json',
-                success: function (result) {
-                    console.log(result)
-                }
-            });
-            otherTransferIndex = layer.open({
-                type: 1,
-                title: '确认他人转账信息',
-                area: ['400px', '600px'],
-                content: $('#otherTranferConfirmPage'),
-                end:function () {
-                    init();
-                }
-            });
-            form.render();
+            var password = $("#otherTransferPassWord").val();
+            var amount = $('#otherTransferAmount').val();
+            var delay = $('#otherTransferType option:selected').val();
             var otherTransferAccountConfirmNumber = $('#otherPayAccount option:selected').text();//付款账户
             var otherReceiveAccountConfirm = $('#otherReceiveAccount').val();//收款账户
             var otherTransferNameConfirm = $('#otherAccountName').val();//目标账户户名
@@ -976,6 +960,48 @@
             $('#otherTransferAmountConfirmDX').attr('placeholder', otherTransferAmountConfirmDX);
             $('#otherTransferCommentsConfirm').attr('placeholder', otherTransferCommentsConfirm);
 
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: '/sendSMS',
+                data: {},
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result)
+                }
+            });
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: '/firstupload',
+                data: {
+                    password: password,
+                    amount: amount,
+                    acctFrom: otherTransferAccountConfirmNumber,
+                    acctTo: otherReceiveAccountConfirm,
+                    acctToName: otherTransferNameConfirm,
+                    usage: otherTransferUsageConfirm,
+                    delay: delay,
+                    comments: otherTransferCommentsConfirm
+                },
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result)
+                }
+            });
+
+            otherTransferIndex = layer.open({
+                type: 1,
+                title: '确认他人转账信息',
+                area: ['450px', '600px'],
+                content: $('#otherTranferConfirmPage'),
+                end: function () {
+                    init();
+                }
+            });
+            form.render();
+
             return false;
         });
 
@@ -990,6 +1016,7 @@
             var delay = $('#otherTransferType option:selected').text();
             var comments = $('#otherTransferComments').val();
             var code = $('#otherSecurityCode').val();
+
             switch (delay) {
                 case '立即转账':
                     delay = 0;
@@ -1003,7 +1030,8 @@
                 default:
                     break;
             }
-
+            var summary = password + amount + acctFrom + acctTo + acctToName + usage + delay + comments;
+            var hashsummary = CryptoJS.SHA256(summary);
             console.log(password);
             console.log(amount);
             console.log(acctFrom);
@@ -1011,28 +1039,23 @@
             console.log(acctToName);
             console.log(usage);
             console.log(delay);
-            console.log(comments);
+            console.log(summary);
+            console.log("hash: "+hashsummary);
 
             $.ajax({
                 type: 'POST',
                 url: '/innertransfer',
                 data: {
-                    password:password,
-                    amount:amount,
-                    acctFrom:acctFrom,
-                    acctTo:acctTo,
-                    acctToName:acctToName,
-                    usage:usage,
-                    delay:delay,
-                    comments:comments,
-                    code:code
+                    hashsummary:hashsummary+"",
+                    code: code,
+                    summary:summary
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if(data.msg == '成功'){
+                    if (data.msg == '成功') {
                         layer.alert("转账成功");
                         layer.close(otherTransferIndex);
-                    }else{
+                    } else {
                         layer.alert(data.msg);
                         layer.close(otherTransferIndex);
                     }
@@ -1092,10 +1115,10 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if(data.msg == '成功'){
+                    if (data.msg == '成功') {
                         layer.alert("转账成功");
                         layer.close(personalTransferIndex);
-                    }else{
+                    } else {
                         layer.alert(data.msg);
                         layer.close(personalTransferIndex);
                     }
@@ -1125,7 +1148,7 @@
                     return "验证码为4位数字";
                 }
             },
-            paymentpassword:function (value) {
+            paymentpassword: function (value) {
                 if (value.trim() == "") {
                     return "交易密码不能为空"
                 }
@@ -1133,7 +1156,7 @@
                     return "交易密码为6位数字";
                 }
             },
-            amount:function (value) {
+            amount: function (value) {
                 if (value.trim() == "") {
                     return "支付金额不能为空"
                 }
@@ -1160,12 +1183,51 @@
 
 
     });
+
+    function init() {
+        layui.use(['form','jquery'], function () {
+            var form = layui.form;
+            $ = layui.jquery;
+            $("#personalTransferPassWord").val("");
+            $('#personalTransferAmount').val("");
+            $('#personalPayAccount option:first').attr("selected",true);
+            $('#personalReceiveAccount option:first').attr("selected",true);
+            $('#personalTransferUsage option:first').attr("selected",true);
+            $('#personalTransferType option:first').attr("selected",true);
+            $('#personalTransferComments').val("");
+            $('#personalSecurityCode').val("");
+            $('#personalTransferAccountConfirm').attr('placeholder', "");
+            $('#personalReceiveAccountConfirm').attr('placeholder', "");
+            $('#personalTransferTypeConfirm').attr('placeholder', "");
+            $('#personalTransferUsageConfirm').attr('placeholder', "");
+            $('#personalTransferCommentsConfirm').attr('placeholder', "");
+            $('#personalTransferAmountConfirm').attr('placeholder', "");
+            $('#personalTransferAmountConfirmDX').attr('placeholder', "");
+
+            $('#otherTransferAccountConfirm').attr('placeholder', "");
+            $('#otherReceiveAccountConfirm').attr('placeholder', "");
+            $('#otherAccountNameConfirm').attr('placeholder', "");
+            $('#otherTransferTypeConfirm').attr('placeholder', "");
+            $('#otherTransferUsageConfirm').attr('placeholder', "");
+            $('#otherTransferAmountConfirm').attr('placeholder', "");
+            $('#otherTransferAmountConfirmDX').attr('placeholder', "");
+            $('#otherTransferCommentsConfirm').attr('placeholder', "");
+            $("#otherTransferPassWord").val("");
+            $('#otherTransferAmount').val("");
+            $('#otherPayAccount option:first').attr("selected",true);
+            $('#otherReceiveAccount').val("");
+            $('#otherAccountName').val("");
+            $('#otherTransferUsage option:first').attr("selected",true);
+            $('#otherTransferType option:first').attr("selected",true);
+            $('#otherTransferComments').val("");
+            $('#otherSecurityCode').val("");
+            form.render();
+        })
+    }
 </script>
 
 <script type="text/html" id="barDemo">
-    <a id="hideAmount" class="layui-btn layui-btn-xs" lay-event="allowance">余额</a>
-    <!--<a class="layui-btn layui-btn-xs" lay-event="detail">明细</a>-->
-    <!--<a class="layui-btn layui-btn-xs" lay-event="transfer">转账</a>-->
+    <a name="hideAmount" class="layui-btn layui-btn-xs" lay-event="allowance">余额</a>
 </script>
 
 </html>

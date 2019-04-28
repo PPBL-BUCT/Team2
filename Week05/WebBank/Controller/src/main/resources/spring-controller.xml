@@ -82,6 +82,7 @@
             <mvc:exclude-mapping path="*.jpg"/>
             <mvc:exclude-mapping path="*.jpeg"/>
             <mvc:exclude-mapping path="/CaptchaCode/**"/>
+            <mvc:exclude-mapping path="/sendSMS/**"/>
             <bean class="cn.edu.buct.global.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

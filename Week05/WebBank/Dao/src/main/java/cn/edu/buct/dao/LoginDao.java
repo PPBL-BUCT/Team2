@@ -10,4 +10,5 @@ public interface LoginDao {
     User select(String uid);
     User selectByUserName(String un);
     Integer updateTimes();
+    Integer insertUser(User user);
 }

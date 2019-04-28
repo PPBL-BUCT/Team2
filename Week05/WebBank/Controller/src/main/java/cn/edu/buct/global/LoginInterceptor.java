@@ -12,7 +12,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
         String url = httpServletRequest.getRequestURI();
-        if(url.toLowerCase().indexOf("login")>=0)
+        if(url.toLowerCase().indexOf("login")>=0||url.toLowerCase().indexOf("register")>=0)
         {
             //找到login
             return true;

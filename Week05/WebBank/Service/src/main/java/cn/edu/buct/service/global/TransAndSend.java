@@ -199,4 +199,28 @@ public class TransAndSend {
         String jsonString = JSON.toJSONString(map);
         return jsonString;
     }
+
+
+    //注册json
+    public static String createRegistValidateJson(String accountNo,String phoneNo,String password){
+        Map header = new HashMap();
+        header.put("MESSNO","39E37FB1F62947D8AA52E88D5CF7D9B0");
+        Date now = new Date();
+        String time = sdf.format(now);
+        header.put("RQ-TIME",time);
+        header.put("PKG","RegistValidate");
+
+        Map body = new HashMap();
+        body.put("IDType","00");
+        body.put("IDNO","132629199301102312");
+        body.put("accountNo",accountNo);
+        body.put("phoneNo",phoneNo);
+        body.put("password",password);
+
+        Map map = new HashMap();
+        map.put("Header",header);
+        map.put("Body",body);
+        String jsonString = JSON.toJSONString(map);
+        return jsonString;
+    }
 }

@@ -70,11 +70,13 @@ public class CardController {
             Account account = new Account(null, uid, user.getName(), password, cardNumber, null);
             success = accountListService.addNewCard(account);
         }
-        map.put("success", info);
+
         if (!success) {
             Log log1 = logService.get(logSn);
             log1.setRs("失败");
             boolean successFlag = logService.edit(log1);
+        }else{
+            map.put("success", "成功");
         }
         return map;
     }
@@ -97,27 +99,51 @@ public class CardController {
         map.put("balance", balance);
         return map;
     }
+    @RequestMapping("/register/sendSMS")
+    @ResponseBody
+    public Map sendRSMS(HttpSession session) {
+        String code = getNonce_str();
+        session.setAttribute("code",code);
+        this.setNullAttrbute(session,"code");
+        System.out.println("code:   "+code);
+        User user = (User) session.getAttribute("registerUser");
+        String uid = user.getUid();
+
+
+        Map map = new HashMap();
+        String json = TransAndSend.createSendSMSJson(uid,code);
+        String returnStr = TransAndSend.post("http://118.25.78.207:8080/HostSimulator/SendSMS.do", json);
+        JSONObject jsonObject = JSONObject.parseObject(returnStr);
+        Map<String, Object> returnJson = (Map<String, Object>) jsonObject;
+        System.out.println(returnStr);
+        Map<String, Object> body = (Map<String, Object>) returnJson.get("Body");
+        boolean success = true;
+        String info = (String) body.get("INFO");
+        map.put("INFO", info);
+        map.put("code",code);
+        return map;
+    }
 
     @RequestMapping("/sendSMS")
     @ResponseBody
     public Map sendSMS(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        String uid = user.getUid();
         String code = getNonce_str();
-
         session.setAttribute("code",code);
         this.setNullAttrbute(session,"code");
         System.out.println("code:   "+code);
+        User user = (User) session.getAttribute("user");
+        String uid = user.getUid();
+
 
         Map map = new HashMap();
-//        String json = TransAndSend.createSendSMSJson(uid,code);
-//        String returnStr = TransAndSend.post("http://118.25.143.204:8080/HostSimulator/SendSMS.do", json);
-//        JSONObject jsonObject = JSONObject.parseObject(returnStr);
-//        Map<String, Object> returnJson = (Map<String, Object>) jsonObject;
-//        Map<String, Object> body = (Map<String, Object>) returnJson.get("Body");
-//        boolean success = true;
-//        String info = (String) body.get("INFO");
-//        map.put("INFO", info);
+        String json = TransAndSend.createSendSMSJson(uid,code);
+        String returnStr = TransAndSend.post("http://118.25.78.207:8080/HostSimulator/SendSMS.do", json);
+        JSONObject jsonObject = JSONObject.parseObject(returnStr);
+        Map<String, Object> returnJson = (Map<String, Object>) jsonObject;
+        Map<String, Object> body = (Map<String, Object>) returnJson.get("Body");
+        boolean success = true;
+        String info = (String) body.get("INFO");
+        map.put("INFO", info);
         map.put("code",code);
         return map;
     }
@@ -168,77 +194,76 @@ public class CardController {
         Map<String, Object> body = (Map<String, Object>) returnJson.get("Body");
         System.out.println("jsonBody:"+body.getClass().getName()+body);
         List<Trans> transList = (List<Trans>) body.get("TransList");
+        Integer total = (Integer) body.get("total");
+        System.out.println(total);
         System.out.println(transList);
         map.put("code", 0);
         map.put("msg", "");
-        map.put("count", transList.size());
+        map.put("count", total);
         map.put("data", transList);
+        return map;
+    }
+
+    @RequestMapping("/firstupload")
+    @ResponseBody
+    public Map firstUpload(HttpSession session,@RequestParam String password,
+                                @RequestParam String amount,@RequestParam String acctFrom,
+                                @RequestParam String acctTo,@RequestParam String acctToName,
+                                @RequestParam String usage,@RequestParam Integer delay,
+                                @RequestParam String comments){
+        Map<String,Object> map = new HashMap<>();
+        map.put("password",password);
+        map.put("amount",amount);
+        map.put("acctFrom",acctFrom);
+        map.put("acctTo",acctTo);
+        map.put("acctToName",acctToName);
+        map.put("usage",usage);
+        map.put("delay",delay);
+        map.put("comments",comments);
+        System.out.println(map);
+        String sighEle = password+amount+acctFrom+acctTo+acctToName+usage+delay+comments;
+        String firstSign = Sha.SHA(sighEle, "SHA-256");
+        System.out.println(firstSign);
+        session.setAttribute("firstUpload",map);
+        session.setAttribute("firstSign",firstSign);
+        session.setAttribute("sighEle",sighEle);
         return map;
     }
 
     @RequestMapping("/innertransfer")
     @ResponseBody
-    public Map transfer(HttpSession session,@RequestParam String password,@RequestParam String amount,@RequestParam String acctFrom,@RequestParam String acctTo,@RequestParam String acctToName,@RequestParam String usage,@RequestParam Integer delay,@RequestParam String comments,@RequestParam String code) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        double d = Double.parseDouble(amount);
-        String amounts = df.format(d);
+    public Map transfer(HttpSession session,@RequestParam String hashsummary,@RequestParam String code,@RequestParam String summary) {
+        String firstSign = (String)session.getAttribute("firstSign");
+        String sighEle = (String)session.getAttribute("sighEle");
+        System.out.println(sighEle);
+        System.out.println(summary);
+
+        System.out.println(firstSign);
+        System.out.println(hashsummary);
         Map<String, Object> map = new HashMap<>();
-        map = accountListService.innerOtherTransfer(session,password,amounts,acctFrom,acctTo,acctToName,usage,delay,comments,code);
-//        String securitycode = (String)session.getAttribute("code");
-//        if (securitycode==null){
-//            map.put("msg","验证码失效");
-//        }else if (!securitycode.equals(code)){
-//            map.put("msg","验证码错误");
-//        }else{
-//
-////        final Object[] objs = new Object[1];
-//            service.schedule(new Runnable() {
-//                private String password;
-//                private String amount;
-//                private String acctFrom;
-//                private String acctTo;
-//                private String acctToName;
-//                private String usage;
-//                private String comments;
-//
-//                public Runnable accept(String password, String amount, String acctFrom, String acctTo, String acctToName, String usage, String comments) {
-//                    System.out.println("赋值");
-//                    this.password = password;
-//                    this.amount = amount;
-//                    this.acctFrom = acctFrom;
-//                    this.acctTo = acctTo;
-//                    this.acctToName = acctToName;
-//                    this.usage = usage;
-//                    this.comments = comments;
-//                    return this;
-//                }
-//
-//                @Override
-//                public void run() {
-//                    System.out.println("主进程");
-//                    String passWord = Sha.SHA(password + "BUCT", "SHA-256");
-//                    System.out.println(passWord);
-//                    String json = TransAndSend.createInnerTransferJson(passWord, amount, acctFrom, acctToName, usage, acctTo, comments);
-//                    System.out.println(json);
-//                    String returnStr = TransAndSend.post("http://118.25.143.204:8080/HostSimulator/InnerTransfer.do", json);
-//                    JSONObject jsonObject = JSONObject.parseObject(returnStr);
-//                    Map<String, Object> returnJson = (Map<String, Object>) jsonObject;
-//                    System.out.println(returnJson);
-//                    Map<String, Object> body = (Map<String, Object>) returnJson.get("Body");
-//                    String success = (String) body.get("INFO");
-////                objs[0] = success;
-//                    System.out.println(success);
-//                }
-//            }.accept(password, amount, acctFrom, acctTo, acctToName, usage, comments), delay, TimeUnit.SECONDS);
-////        System.out.println(objs);
-//            map.put("msg","成功");
-//        }
+        Map<String,Object> firstUpload = (Map<String, Object>)session.getAttribute("firstUpload");
+        if (firstSign!=null&&firstSign.equals(hashsummary)){
+            DecimalFormat df = new DecimalFormat("0.00");
+            double d = Double.parseDouble((String) firstUpload.get("amount"));
+            String amounts = df.format(d);
+
+            map = accountListService.innerOtherTransfer(session,(String) firstUpload.get("password"),amounts,(String) firstUpload.get("acctFrom"),
+                    (String) firstUpload.get("acctTo"),(String) firstUpload.get("acctToName"),(String) firstUpload.get("usage"),(Integer) firstUpload.get("delay"),
+                    (String) firstUpload.get("comments"),code);
+        }else {
+            map.put("msg","信息不匹配");
+        }
+
         return map;
     }
 
     @RequestMapping("/innertransferself")
     @ResponseBody
-    public Map transferSelf(HttpSession session,@RequestParam String password,@RequestParam String amount,@RequestParam String acctFrom,@RequestParam String acctTo,@RequestParam String usage,@RequestParam Integer delay,@RequestParam String comments,@RequestParam String code) {
+    public Map transferSelf(HttpSession session,@RequestParam String password,
+                            @RequestParam String amount,@RequestParam String acctFrom,
+                            @RequestParam String acctTo,@RequestParam String usage,
+                            @RequestParam Integer delay,@RequestParam String comments,
+                            @RequestParam String code) {
         DecimalFormat df = new DecimalFormat("0.00");
         double d = Double.parseDouble(amount);
         String amounts = df.format(d);

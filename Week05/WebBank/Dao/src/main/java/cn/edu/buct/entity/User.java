@@ -8,6 +8,18 @@ public class User {
     private String phone;
     private String name;
 
+    public User(String uid, String un, String pw, Integer tm, String phone, String name) {
+        this.uid = uid;
+        this.un = un;
+        this.pw = pw;
+        this.tm = tm;
+        this.phone = phone;
+        this.name = name;
+    }
+
+    public User() {
+    }
+
     public String getPhone() {
         return phone;
     }

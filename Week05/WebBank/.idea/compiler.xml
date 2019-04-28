@@ -12,7 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Controller" target="1.7" />
+      <module name="Controller" target="1.8" />
       <module name="Dao" target="1.8" />
       <module name="Service" target="1.8" />
       <module name="WebBank" target="1.8" />
@@ -20,5 +20,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-encoding utf-8" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Controller" options="" />
+      <module name="Dao" options="" />
+      <module name="Service" options="" />
+    </option>
   </component>
 </project>

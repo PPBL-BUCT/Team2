@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service("loginService")
 public class LoginServiceimpl implements LoginService {
@@ -69,16 +69,8 @@ public class LoginServiceimpl implements LoginService {
     }
 
     @Override
-    public Map<String, Object> register(String requestData, String encryptKey) {
-        Map<String, Object> map = new HashMap<>();
-        System.out.println(requestData);
-        System.out.println(encryptKey);
-        Verification decodeVerification = new Verification();
-        decodeVerification = Decode(requestData, encryptKey);
-        String userName = decodeVerification.getUserName();
-        String passWord = decodeVerification.getPassWord();
-        String secureCode = decodeVerification.getIdentifyingCode();
-        return null;
+    public Integer addUser(User user) {
+        return loginDao.insertUser(user);
     }
 
     @Override
